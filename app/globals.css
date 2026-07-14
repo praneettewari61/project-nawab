@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+:root {
+  /* Color tokens */
+  --nawab-color-ivory: #f8f4ec;
+  --nawab-color-warm-white: #fffdf8;
+  --nawab-color-antique-gold: #b08d57;
+  --nawab-color-deep-maroon: #6e1f2a;
+  --nawab-color-emerald-green: #1f5e4e;
+  --nawab-color-charcoal: #2d2d2d;
+  --nawab-color-sand: #dccbb3;
+  --nawab-color-soft-rose: #d9a8a1;
+  --nawab-color-muted-sage: #9daa91;
+  --nawab-color-success: #4f8a5b;
+  --nawab-color-warning: #d79b35;
+  --nawab-color-error: #b54848;
+  --nawab-color-info: #557ea5;
+
+  /* Semantic theme tokens */
+  --nawab-color-background: var(--nawab-color-ivory);
+  --nawab-color-surface: var(--nawab-color-warm-white);
+  --nawab-color-foreground: var(--nawab-color-charcoal);
+  --nawab-color-border: var(--nawab-color-sand);
+  --nawab-color-focus-ring: var(--nawab-color-antique-gold);
+
+  /* Design-system scales */
+  --nawab-radius-small: 0.75rem;
+  --nawab-radius-medium: 1.25rem;
+  --nawab-radius-large: 2rem;
+  --nawab-radius-card: 1.5rem;
+  --nawab-shadow-soft: 0 10px 30px rgb(45 45 45 / 8%);
+  --nawab-shadow-gold-glow: 0 0 32px rgb(176 141 87 / 30%);
+  /* Layered, warm-tinted elevation for "handmade paper" cards. */
+  --nawab-shadow-card:
+    0 1px 1px rgb(45 45 45 / 4%),
+    0 10px 24px -12px rgb(94 67 34 / 18%),
+    0 34px 60px -34px rgb(94 67 34 / 12%);
+  --nawab-shadow-card-hover:
+    0 2px 4px rgb(45 45 45 / 6%),
+    0 22px 42px -16px rgb(94 67 34 / 24%),
+    0 0 44px rgb(176 141 87 / 16%);
+  --nawab-text-hero: 3.5rem;
+  --nawab-text-h1: 2.5rem;
+  --nawab-text-h2: 2rem;
+  --nawab-text-h3: 1.625rem;
+  --nawab-text-body-large: 1.125rem;
+  --nawab-text-body: 1rem;
+  --nawab-text-caption: 0.875rem;
+  --nawab-text-small: 0.75rem;
+  --nawab-transition-micro: 150ms;
+  --nawab-transition-normal: 300ms;
+  --nawab-transition-large: 500ms;
+  --nawab-transition-hero: 700ms;
+}
+
+@theme inline {
+  --color-ivory: var(--nawab-color-ivory);
+  --color-warm-white: var(--nawab-color-warm-white);
+  --color-antique-gold: var(--nawab-color-antique-gold);
+  --color-deep-maroon: var(--nawab-color-deep-maroon);
+  --color-emerald-green: var(--nawab-color-emerald-green);
+  --color-charcoal: var(--nawab-color-charcoal);
+  --color-sand: var(--nawab-color-sand);
+  --color-soft-rose: var(--nawab-color-soft-rose);
+  --color-muted-sage: var(--nawab-color-muted-sage);
+  --color-success: var(--nawab-color-success);
+  --color-warning: var(--nawab-color-warning);
+  --color-error: var(--nawab-color-error);
+  --color-info: var(--nawab-color-info);
+  --color-background: var(--nawab-color-background);
+  --color-surface: var(--nawab-color-surface);
+  --color-foreground: var(--nawab-color-foreground);
+  --color-border: var(--nawab-color-border);
+
+  --font-display: var(--font-cormorant-garamond);
+  --font-sans: var(--font-manrope);
+
+  --radius-small: var(--nawab-radius-small);
+  --radius-medium: var(--nawab-radius-medium);
+  --radius-large: var(--nawab-radius-large);
+  --radius-card: var(--nawab-radius-card);
+  --shadow-soft: var(--nawab-shadow-soft);
+  --shadow-gold-glow: var(--nawab-shadow-gold-glow);
+  --shadow-card: var(--nawab-shadow-card);
+  --shadow-card-hover: var(--nawab-shadow-card-hover);
+
+  --text-hero: var(--nawab-text-hero);
+  --text-h1: var(--nawab-text-h1);
+  --text-h2: var(--nawab-text-h2);
+  --text-h3: var(--nawab-text-h3);
+  --text-body-large: var(--nawab-text-body-large);
+  --text-body: var(--nawab-text-body);
+  --text-caption: var(--nawab-text-caption);
+  --text-small: var(--nawab-text-small);
+}
+
+@layer base {
+  * {
+    border-color: var(--nawab-color-border);
+  }
+
+  html {
+    background: var(--nawab-color-background);
+  }
+
+  body {
+    background: var(--nawab-color-background);
+    color: var(--nawab-color-foreground);
+    font-family: var(--font-manrope), sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  ::selection {
+    background: var(--nawab-color-antique-gold);
+    color: var(--nawab-color-warm-white);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--nawab-color-focus-ring);
+    outline-offset: 3px;
+  }
+}
+
+/* Lenis applies these classes to keep native and virtual scrolling in sync. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+/* Low-contrast fibers create a handmade-paper surface without a raster asset. */
+.paper-texture {
+  background-image:
+    radial-gradient(rgb(45 45 45 / 3%) 0.5px, transparent 0.5px),
+    radial-gradient(rgb(176 141 87 / 3%) 0.5px, transparent 0.5px);
+  background-position:
+    0 0,
+    7px 9px;
+  background-size:
+    13px 13px,
+    17px 17px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
