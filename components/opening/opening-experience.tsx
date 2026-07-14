@@ -16,23 +16,31 @@ import { music } from "@/lib/config/music";
 import { InvitationUnfold } from "./invitation-unfold";
 import { MusicToggle } from "./music-toggle";
 import { SplashScreen } from "./splash-screen";
+import { WelcomeScreen } from "./welcome-screen";
 
-type Phase = "splash" | "invitation";
+type Phase = "welcome" | "splash" | "invitation";
 
 /**
- * Orchestrates the full entry: splash → invitation → unfold → website. The
+ * Orchestrates the full entry: welcome → splash → invitation → unfold → website.
+ * The welcome screen captures the first tap (so the browser lets audio start),
+ * meaning the proposal-photo splash appears with the music already playing. The
  * website (hero) is always mounted underneath; the opening lives in a fixed
- * curtain on top that is removed once the invitation has opened. Page scrolling
- * stays locked until then.
+ * curtain on top that is removed once the invitation has opened.
  */
 export function OpeningExperience() {
-  const [phase, setPhase] = useState<Phase>("splash");
+  const [phase, setPhase] = useState<Phase>("welcome");
   const [hasOpened, setHasOpened] = useState(false);
   const { setLocked } = useScrollLock();
   const { enabled: isMusicEnabled, toggle: toggleMusic, enable: enableMusic } = useMusic();
 
+  function handleBegin() {
+    // First user gesture — start the music now so it plays over the splash photo.
+    if (music.autoPlayOnEnter) enableMusic();
+    setPhase("splash");
+  }
+
   function handleSplashContinue() {
-    // First user gesture — start the music softly (if configured) while browsers allow it.
+    // Fallback: (re)start music if it didn't begin on the welcome tap.
     if (music.autoPlayOnEnter) enableMusic();
     setPhase("invitation");
   }
@@ -68,7 +76,9 @@ export function OpeningExperience() {
       {!hasOpened ? (
         <div className="fixed inset-0 z-40 overflow-hidden">
           <AnimatePresence mode="wait">
-            {phase === "splash" ? (
+            {phase === "welcome" ? (
+              <WelcomeScreen details={invitationDetails} key="welcome" onBegin={handleBegin} />
+            ) : phase === "splash" ? (
               <SplashScreen
                 firstName={invitationDetails.firstName}
                 key="splash"
@@ -85,13 +95,16 @@ export function OpeningExperience() {
             )}
           </AnimatePresence>
 
-          <div
-            className={`fixed right-5 top-5 z-50 ${
-              phase === "splash" ? "text-warm-white" : "text-antique-gold"
-            }`}
-          >
-            <MusicToggle isEnabled={isMusicEnabled} onToggle={toggleMusic} />
-          </div>
+          {/* Music toggle appears once music can play (from the splash onward). */}
+          {phase !== "welcome" ? (
+            <div
+              className={`fixed right-5 top-5 z-50 ${
+                phase === "splash" ? "text-warm-white" : "text-antique-gold"
+              }`}
+            >
+              <MusicToggle isEnabled={isMusicEnabled} onToggle={toggleMusic} />
+            </div>
+          ) : null}
         </div>
       ) : null}
     </ChaptersProvider>
