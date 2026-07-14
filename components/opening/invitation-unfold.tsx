@@ -130,13 +130,47 @@ export function InvitationUnfold({ details, onOpened }: InvitationUnfoldProps) {
           details={details}
           sealSlot={
             <div className="relative grid place-items-center" ref={sealRef}>
-              <WaxSeal
-                ariaLabel="Open the invitation"
-                imageSrc={details.sealImageSrc}
-                interactive
-                onPress={handleOpen}
-                size={SEAL_SIZE}
-              />
+              {/* Pulsing gold halo — draws the eye so guests know to tap the seal. */}
+              {isOpening ? null : (
+                <span aria-hidden="true" className="pointer-events-none absolute inset-0 grid place-items-center">
+                  <motion.span
+                    animate={
+                      shouldReduceMotion
+                        ? { opacity: 0.5 }
+                        : { opacity: [0.35, 0.7, 0.35], scale: [0.9, 1.12, 0.9] }
+                    }
+                    className="block rounded-full"
+                    style={{
+                      width: SEAL_SIZE * 1.65,
+                      height: SEAL_SIZE * 1.65,
+                      background:
+                        "radial-gradient(circle, rgba(176,141,87,0.45), rgba(176,141,87,0.12) 45%, transparent 70%)",
+                    }}
+                    transition={
+                      shouldReduceMotion
+                        ? { duration: 0.3 }
+                        : { duration: 2.3, ease: "easeInOut", repeat: Infinity }
+                    }
+                  />
+                </span>
+              )}
+              {/* Gentle breathing so the seal feels alive and tappable. */}
+              <motion.div
+                animate={isOpening || shouldReduceMotion ? { scale: 1 } : { scale: [1, 1.05, 1] }}
+                transition={
+                  isOpening || shouldReduceMotion
+                    ? { duration: 0.3 }
+                    : { duration: 2.3, ease: "easeInOut", repeat: Infinity }
+                }
+              >
+                <WaxSeal
+                  ariaLabel="Open the invitation"
+                  imageSrc={details.sealImageSrc}
+                  interactive
+                  onPress={handleOpen}
+                  size={SEAL_SIZE}
+                />
+              </motion.div>
               <SealCrack ref={crackRef} />
             </div>
           }

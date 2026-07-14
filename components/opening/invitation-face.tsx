@@ -125,6 +125,9 @@ export function InvitationFace({ details, variant = "panel", sealSlot }: Invitat
 
             {/* Seal slot — reserved space in panels, interactive seal in overlay */}
             <div className="flex flex-col items-center gap-3">
+              <p className="animate-pulse font-sans text-caption font-semibold uppercase tracking-[0.24em] text-antique-gold motion-reduce:animate-none">
+                Tap to open
+              </p>
               <div
                 className={cn("grid place-items-center", isSeal && "visible pointer-events-auto")}
                 style={{ minHeight: SEAL_SIZE }}
