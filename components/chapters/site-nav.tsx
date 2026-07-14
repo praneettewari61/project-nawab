@@ -114,16 +114,16 @@ export function SiteNav({ monogram }: SiteNavProps) {
             </button>
           </div>
 
-          {/* Mobile menu toggle */}
+          {/* Mobile menu toggle — labeled so guests know it opens the menu */}
           <button
             aria-controls="site-nav-menu"
             aria-expanded={menuOpen}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            className="grid size-10 place-items-center rounded-full text-deep-maroon transition-colors hover:text-antique-gold motion-reduce:transition-none sm:hidden"
+            className="inline-flex items-center gap-1.5 rounded-full border border-antique-gold/50 py-1.5 pl-2.5 pr-3.5 font-sans text-xs font-semibold uppercase tracking-[0.12em] text-antique-gold transition-colors hover:bg-antique-gold/10 motion-reduce:transition-none sm:hidden"
             onClick={() => setMenuOpen((value) => !value)}
             type="button"
           >
-            {menuOpen ? <X size={22} strokeWidth={1.8} /> : <Menu size={22} strokeWidth={1.8} />}
+            {menuOpen ? <X size={16} strokeWidth={2} /> : <Menu size={16} strokeWidth={2} />}
+            {menuOpen ? "Close" : "Menu"}
           </button>
         </div>
       </motion.nav>
