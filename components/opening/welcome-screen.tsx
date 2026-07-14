@@ -10,6 +10,8 @@ interface WelcomeScreenProps {
   details: InvitationDetails;
   /** Fired on the entry tap — starts the music and reveals the splash. */
   onBegin: () => void;
+  /** Optional guest name from a personalized link — greeted after "Welcome". */
+  guestName?: string;
 }
 
 const container: Variants = {
@@ -31,8 +33,9 @@ const crest: Variants = {
  * splash then appears with the music already playing. The whole screen is the
  * tap target.
  */
-export function WelcomeScreen({ details, onBegin }: WelcomeScreenProps) {
+export function WelcomeScreen({ details, onBegin, guestName }: WelcomeScreenProps) {
   const reduce = useSafeReducedMotion();
+  const greeted = Boolean(guestName);
 
   return (
     <motion.div
@@ -77,12 +80,16 @@ export function WelcomeScreen({ details, onBegin }: WelcomeScreenProps) {
             </motion.div>
           ) : null}
 
-          <motion.p
-            className="font-display text-[2.5rem] font-medium leading-none tracking-[0.02em] text-deep-maroon sm:text-[3.25rem]"
-            variants={item}
-          >
-            Welcome
-          </motion.p>
+          <motion.div className="flex flex-col items-center gap-2" variants={item}>
+            <p className="font-display text-[2.5rem] font-medium leading-none tracking-[0.02em] text-deep-maroon sm:text-[3.25rem]">
+              Welcome{greeted ? "," : ""}
+            </p>
+            {greeted ? (
+              <p className="font-display text-[2rem] italic leading-tight text-antique-gold sm:text-[2.75rem]">
+                {guestName}
+              </p>
+            ) : null}
+          </motion.div>
 
           <motion.p
             animate={reduce ? { opacity: 0.55 } : { opacity: [0.3, 0.6, 0.3] }}

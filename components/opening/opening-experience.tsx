@@ -27,7 +27,12 @@ type Phase = "welcome" | "splash" | "invitation";
  * website (hero) is always mounted underneath; the opening lives in a fixed
  * curtain on top that is removed once the invitation has opened.
  */
-export function OpeningExperience() {
+interface OpeningExperienceProps {
+  /** Optional guest name from a personalized link (e.g. /daniel). */
+  guestName?: string;
+}
+
+export function OpeningExperience({ guestName }: OpeningExperienceProps = {}) {
   const [phase, setPhase] = useState<Phase>("welcome");
   const [hasOpened, setHasOpened] = useState(false);
   const { setLocked } = useScrollLock();
@@ -77,7 +82,12 @@ export function OpeningExperience() {
         <div className="fixed inset-0 z-40 overflow-hidden">
           <AnimatePresence mode="wait">
             {phase === "welcome" ? (
-              <WelcomeScreen details={invitationDetails} key="welcome" onBegin={handleBegin} />
+              <WelcomeScreen
+                details={invitationDetails}
+                guestName={guestName}
+                key="welcome"
+                onBegin={handleBegin}
+              />
             ) : phase === "splash" ? (
               <SplashScreen
                 firstName={invitationDetails.firstName}
