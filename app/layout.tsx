@@ -17,10 +17,11 @@ const manrope = Manrope({
 
 export const metadata: Metadata = {
   title: {
-    default: "Project Nawab",
-    template: "%s | Project Nawab",
+    default: "Varnit & Akshita",
+    template: "%s · Varnit & Akshita",
   },
-  description: "A luxury digital wedding experience.",
+  description:
+    "Together with our families, we invite you to celebrate our wedding — 12 December 2026, Lucknow.",
 };
 
 export default function RootLayout({
