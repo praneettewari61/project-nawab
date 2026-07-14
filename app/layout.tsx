@@ -23,7 +23,6 @@ export const metadata: Metadata = {
   description:
     "Together with our families, we invite you to celebrate our wedding — 12 December 2026, Lucknow.",
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{
