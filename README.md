@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Varnit & Akshita — Wedding Invitation
 
-## Getting Started
+A luxury digital wedding invitation built with Next.js 16, React 19, Tailwind v4,
+and Framer Motion. Guests open a wax-sealed invitation, explore the celebrations
+and travel information, and RSVP.
 
-First, run the development server:
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). Personalized links work too —
+e.g. `/daniel` greets the guest by name.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## RSVP backend
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+RSVPs are collected by a small, self-contained backend that lives entirely inside
+this app — no third-party service:
 
-## Learn More
+| Piece            | Location                     | Notes                                        |
+| ---------------- | ---------------------------- | -------------------------------------------- |
+| Submit endpoint  | `app/api/rsvp/route.ts`      | `POST` — validates and stores a response     |
+| Data layer       | `lib/db.ts`                  | Neon Postgres in prod; JSON file in dev      |
+| Admin dashboard  | `app/admin/page.tsx`         | Lists responses + summary counts             |
+| Admin auth       | `proxy.ts`                   | HTTP Basic Auth over `/admin`                |
+| Keep-warm ping   | `app/api/health/route.ts`    | Warms the function + database                |
 
-To learn more about Next.js, take a look at the following resources:
+**Local development needs no database.** When `DATABASE_URL` is unset, RSVPs are
+saved to a JSON file in the OS temp directory so the full flow works out of the box.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Environment variables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Copy `.env.example` to `.env.local` and fill it in. In production, set the same
+variables in **Vercel → Project → Settings → Environment Variables**.
 
-## Deploy on Vercel
+| Variable         | Required | Purpose                                                        |
+| ---------------- | -------- | -------------------------------------------------------------- |
+| `DATABASE_URL`   | prod     | Postgres connection string (auto-injected by the Neon store)   |
+| `ADMIN_USER`     | yes      | Username for the `/admin` dashboard                            |
+| `ADMIN_PASSWORD` | yes      | Password for the `/admin` dashboard                            |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Provisioning the database (one time, in Vercel)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Vercel dashboard → your project → **Storage** → **Create Database** → **Neon** (Postgres).
+2. Connect it to the project. Vercel injects `DATABASE_URL` automatically — no manual copy needed.
+3. Add `ADMIN_USER` and `ADMIN_PASSWORD` under **Settings → Environment Variables**.
+4. Redeploy. The `rsvps` table is created automatically on first use.
+
+The couple can then view responses at **`/admin`** (the browser will prompt for the
+username and password).
+
+## Avoiding cold starts
+
+A wedding audience arrives in bursts after long idle gaps, which is exactly when
+serverless cold starts hurt. Two sources are handled:
+
+1. **The Vercel function.** Enable **Fluid Compute** (Vercel → Project → Settings →
+   Functions). It keeps instances warm and reuses them across invocations. It is on
+   by default for new projects — just confirm it's enabled.
+2. **The Neon database** (free tier scales to zero). Keep it awake by pinging
+   `/api/health` on a short interval:
+   - `vercel.json` already defines a **Cron** every 5 minutes hitting `/api/health`.
+     This runs on the Pro plan. On the **Hobby** plan crons only fire once per day,
+     so instead point a **free external uptime monitor** (e.g. UptimeRobot or
+     cron-job.org) at `https://<your-domain>/api/health` every 5 minutes.
+
+`/api/health` does a cheap `SELECT 1`, which both keeps the function hot and wakes
+the Neon compute, so the first real guest never pays the cold-start cost.
+
+## Cost & scale
+
+Everything runs on free tiers and is comfortably sized for a ~500-guest list:
+
+- **Vercel Hobby** (free, non-commercial) covers the hosting, functions, and bandwidth.
+- **Neon free tier** (0.5 GB) stores RSVPs — each response is a fraction of a
+  kilobyte, so 500+ responses use a negligible amount of space. Functions scale
+  automatically, so many guests can submit at the same time without issue.
+
+## Deploy
+
+Push to GitHub and import the repo at [vercel.com/new](https://vercel.com/new).
+Set the environment variables above, provision the Neon store, and redeploy.

@@ -138,19 +138,22 @@ export const celebrations: CelebrationsContent = {
   ],
 };
 
-/* ————————————————————————— RSVP (PLACEHOLDER) ————————————————————————— */
+/* ————————————————————————————————— RSVP ————————————————————————————————— */
 
 export interface RsvpContent {
   eyebrow: string;
   title: string;
   intro: string;
+  /** Fine-print reassurance shown beneath the form. */
   note: string;
+  /** Confirmation shown after a response is saved. */
+  thanks: string;
 }
 
-// PLACEHOLDER — visual scaffold only; not yet wired to a backend.
 export const rsvp: RsvpContent = {
   eyebrow: "RSVP",
   title: "Kindly Respond",
   intro: "We would be so honoured to have you with us. Please let us know below.",
-  note: "This is a preview — the RSVP form isn't collecting responses yet.",
+  note: "A little note helps us plan — thank you.",
+  thanks: "Your response has been received. We can't wait to celebrate with you.",
 };

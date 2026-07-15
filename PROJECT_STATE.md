@@ -18,15 +18,14 @@ architecture, and the placeholder content that still needs real data.
 | 4 | Invitation opening animation (gatefold unfold) | ✅ Complete & approved |
 | 5 | Hero + "Our Journey" timeline (data-driven scaffold) | ✅ Built — **placeholder content** |
 | 5b | Save the Date (live countdown) + Venue | ✅ Built — **real date & venue** |
-| 6 | Chapters hub → Travel / Celebrations / RSVP (full-screen overlays) | ✅ Built — Travel + Celebrations real; **RSVP placeholder** |
+| 6 | Chapters hub → Travel / Celebrations / RSVP (full-screen overlays) | ✅ Built — Travel + Celebrations real; **RSVP live** |
 | 7 | Wedding Celebrations (expandable itinerary) | ✅ Built — **real schedule**; per-event venue placeholder |
-| 11 | RSVP (backend) | ⏳ Placeholder form built — not wired to a backend |
+| 11 | RSVP (backend) | ✅ **Live** — POST → Neon Postgres; dev file-store fallback |
 | 8 | Discover Lucknow | ⏳ Not started |
 | 9 | Venue explorer | ⏳ Not started |
 | 10 | Gallery | ⏳ Not started |
-| 11 | RSVP | ⏳ Not started |
 | 12 | Guest dashboard | ⏳ Not started |
-| 13 | Admin dashboard | ⏳ Not started |
+| 13 | Admin dashboard | ✅ **Live** — `/admin`, Basic Auth via `proxy.ts` |
 | 14 | Production (perf, a11y, SEO, testing) | ⏳ Not started |
 
 ---
@@ -36,7 +35,7 @@ architecture, and the placeholder content that still needs real data.
 `app/page.tsx` → `OpeningExperience` renders:
 - **Base layer** (`<main>`, scrollable): `HeroSection` → `StorySection` → `CountdownSection` → `VenueSection` → `ChaptersExperience` (the real site).
 - **Chapters** (`components/chapters/`): chapter open/close state lives in `ChaptersProvider` (context via `useChapters()`), which also renders the single **full-screen overlay** (`ChapterOverlay`, portaled to `<body>`): the page (`#main-content`) is made `inert` + scroll-locked, focus is trapped, Esc/Back close it, a history entry is pushed so the device Back button closes the chapter (not the site), and focus returns to whatever opened it.
-- Two entry points open the chapters: the **`ChaptersHub`** (after Venue — three framed cards) and the persistent **`SiteNav`** (a floating pill at the top, shown once the invitation opens; collapses to a hamburger menu on mobile): monogram + **Date & Venue** (smooth-scrolls to `#save-the-date` via `scrollToSection`, Lenis-aware) + **Events** (→ celebrations) + **Travel Info** (→ travel) + **RSVP** (gold CTA → rsvp). Travel & Celebrations chapters are real; RSVP is a placeholder form.
+- Two entry points open the chapters: the **`ChaptersHub`** (after Venue — three framed cards) and the persistent **`SiteNav`** (a floating pill at the top, shown once the invitation opens; collapses to a hamburger menu on mobile): monogram + **Date & Venue** (smooth-scrolls to `#save-the-date` via `scrollToSection`, Lenis-aware) + **Events** (→ celebrations) + **Travel Info** (→ travel) + **RSVP** (gold CTA → rsvp). Travel, Celebrations, and RSVP chapters are all live.
 - `venue.mapUrl` (in `lib/config/celebration.ts`) is the real Google Maps link, used by both the Venue section's "View Venue" button and every Celebrations event's "View Venue".
 - **Background music** (`components/providers/music-provider.tsx` + `lib/config/music.ts`): one shared looping `<audio>`, started softly on the guest's first tap (`autoPlayOnEnter`) and controlled by a persistent toggle (curtain top-right + the nav speaker button share the same state via `useMusic()`). ⚠️ `music.src` is a **silent placeholder** (`/audio/placeholder.wav`) — drop the couple's licensed track in `public/audio/` and point `src` at it (must be an audio file; Spotify/YouTube links won't play via `<audio>`).
 - **Curtain overlay** (`fixed`, removed once opened): `SplashScreen` → `InvitationUnfold`.
@@ -78,7 +77,20 @@ Still placeholders — **please confirm or provide**:
 8. Real **logo/monogram** image if available (currently the coded V & A crest)
 9. **Travel** (`lib/config/travel.ts`): official **Indian e-Visa URL** (`EVISA_URL`, currently defaulted to the Government-of-India portal — confirm/replace)
 10. **Wedding Celebrations** (`lib/config/chapters.ts` `celebrations`): schedule is real (Haldi · Sangeet & Cocktail · Wedding · Reception, 11–12 Dec 2026). Remaining placeholders: per-event **`venue`** (all set to "The Grand Banquet and Lawn" — confirm specific hall/lawn) and assumed **end times** on `start`/`end` (used only for the .ics). "View Venue" now opens the real Google Maps link.
-11. **RSVP** (`components/chapters/rsvp-chapter.tsx`): the form is a **visual scaffold** — `handleSubmit` only `console.log`s. Needs a real backend/submission + fields confirmed before launch.
+11. **RSVP** — ✅ now **live** (see the RSVP backend section below). Remaining optional: real reCAPTCHA/spam guard, per-event RSVP, email notification to the couple.
+
+---
+
+## RSVP backend (live)
+
+Self-contained, no third-party service. Free-tier sized for a ~500-guest list.
+
+- **Submit**: `components/chapters/rsvp-chapter.tsx` `POST`s JSON to `app/api/rsvp/route.ts` (validates name/attendance/guests/note + captures `source` = the invite path, e.g. `/daniel`). Form shows Sending → Thank you / inline error.
+- **Storage** (`lib/db.ts`): **Neon Postgres** in production via `@neondatabase/serverless` (HTTP driver — no connection cold start), table `rsvps` auto-created on first use. **Dev fallback**: when `DATABASE_URL` is unset and not in production, RSVPs save to a JSON file in the OS temp dir, so local dev works with zero setup. Production without a DB throws `DbNotConfiguredError` (never writes to Vercel's read-only FS).
+- **Admin**: `app/admin/page.tsx` (server component, `force-dynamic`) lists responses + summary counts (Responses / Accepting / Declining / Guests coming), `noindex`.
+- **Auth**: `proxy.ts` (Next 16's renamed `middleware`) — HTTP Basic Auth over `/admin` using `ADMIN_USER` / `ADMIN_PASSWORD`. Realm string must stay ASCII (header = Latin-1). Fails closed if creds unset.
+- **Cold starts**: `app/api/health/route.ts` (`SELECT 1`) + `vercel.json` cron (`*/5` — Pro only; on Hobby use a free external pinger). Enable Vercel **Fluid Compute** to keep the function warm. See README → "Avoiding cold starts".
+- **Env**: `DATABASE_URL` (auto-injected by the Vercel Neon store), `ADMIN_USER`, `ADMIN_PASSWORD`. Template in `.env.example`; local values in `.env.local` (gitignored).
 
 ---
 

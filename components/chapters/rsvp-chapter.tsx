@@ -13,18 +13,51 @@ import { useSafeReducedMotion } from "@/lib/hooks/use-safe-reduced-motion";
 const FIELD =
   "w-full rounded-medium border border-sand bg-warm-white px-4 py-3 font-sans text-body text-charcoal placeholder:text-charcoal/35";
 
-/** RSVP — a styled, accessible placeholder form (not yet wired to a backend). */
+type Status = "idle" | "submitting" | "success" | "error";
+
+/** RSVP — an accessible form wired to /api/rsvp (stored in Postgres). */
 export function RsvpChapter() {
   const reduce = useSafeReducedMotion();
   const uid = useId();
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
+  const [error, setError] = useState("");
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    // Placeholder — a real submit handler / backend comes in a later phase.
-    console.log("RSVP placeholder submit");
-    setSubmitted(true);
+    if (status === "submitting") return;
+
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const payload = {
+      name: String(data.get("name") ?? ""),
+      attendance: String(data.get("attendance") ?? ""),
+      guests: String(data.get("guests") ?? "1"),
+      note: String(data.get("note") ?? ""),
+      // Which invitation link the guest came from, e.g. "/daniel".
+      source: typeof window !== "undefined" ? window.location.pathname : "",
+    };
+
+    setStatus("submitting");
+    setError("");
+
+    try {
+      const response = await fetch("/api/rsvp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) {
+        const body = (await response.json().catch(() => null)) as { error?: string } | null;
+        throw new Error(body?.error ?? "Something went wrong. Please try again.");
+      }
+      setStatus("success");
+    } catch (submitError) {
+      setError(submitError instanceof Error ? submitError.message : "Something went wrong. Please try again.");
+      setStatus("error");
+    }
   }
+
+  const submitting = status === "submitting";
 
   return (
     <Container className="py-14 md:py-20">
@@ -69,15 +102,13 @@ export function RsvpChapter() {
         viewport={{ once: true, amount: 0.3 }}
         whileInView={{ opacity: 1, y: 0 }}
       >
-        {submitted ? (
+        {status === "success" ? (
           <div className="paper-texture flex flex-col items-center gap-3 rounded-card border border-antique-gold/25 bg-warm-white p-8 text-center shadow-card">
             <span className="grid size-12 place-items-center rounded-full border border-antique-gold/40 bg-ivory text-antique-gold">
               <Check size={22} strokeWidth={1.8} />
             </span>
             <h3 className="font-display text-h3 font-medium text-deep-maroon">Thank you</h3>
-            <p className="max-w-prose font-sans text-body leading-7 text-charcoal/70">
-              Your response has been noted in this preview. {rsvp.note}
-            </p>
+            <p className="max-w-prose font-sans text-body leading-7 text-charcoal/70">{rsvp.thanks}</p>
           </div>
         ) : (
           <form className="flex flex-col gap-5 text-left" noValidate onSubmit={handleSubmit}>
@@ -138,8 +169,24 @@ export function RsvpChapter() {
               />
             </div>
 
-            <Button className="mt-1 w-full sm:w-auto sm:self-center" size="large" type="submit">
-              Send RSVP
+            {status === "error" ? (
+              <p
+                aria-live="assertive"
+                className="rounded-medium border border-deep-maroon/25 bg-deep-maroon/5 px-4 py-3 text-center font-sans text-caption font-medium text-deep-maroon"
+                role="alert"
+              >
+                {error}
+              </p>
+            ) : null}
+
+            <Button
+              aria-busy={submitting}
+              className="mt-1 w-full sm:w-auto sm:self-center"
+              disabled={submitting}
+              size="large"
+              type="submit"
+            >
+              {submitting ? "Sending…" : "Send RSVP"}
             </Button>
 
             <p className="text-center font-sans text-caption italic text-charcoal/45">{rsvp.note}</p>
