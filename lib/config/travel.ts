@@ -15,7 +15,7 @@
 /** Icon keys resolved to line-art marks in the card component (keeps this a data file). */
 export type TravelCardIcon = "visa" | "flight" | "explore";
 /** Illustration keys resolved to bespoke SVGs in `travel-art.tsx`. */
-export type DestinationArt = "taj" | "temple";
+export type DestinationArt = "taj" | "imambara" | "ram";
 
 export interface TravelLink {
   label: string;
@@ -24,18 +24,25 @@ export interface TravelLink {
   external?: boolean;
 }
 
-/** A single airport in a route (e.g. Delhi · DEL). */
-export interface RouteStop {
+/** An airport on the journey (e.g. Delhi · DEL). */
+export interface RouteEndpoint {
   city: string;
   code: string;
 }
 
-/** One way to reach Lucknow — a direct hop (one stop) or a connection (two). */
-export interface RouteOption {
-  id: string;
-  heading: string;
-  caption: string;
-  stops: RouteStop[];
+/** Chips beneath the journey — a flight time and a road time. */
+export interface JourneyChip {
+  icon: "flight" | "road";
+  label: string;
+}
+
+/** The storytelling journey: international → Delhi → ✈ → Lucknow → celebration. */
+export interface Journey {
+  origin: string;
+  hub: RouteEndpoint;
+  destination: RouteEndpoint;
+  arrivalTitle: string;
+  arrivalSubtitle: string;
 }
 
 /** A nearby place worth a detour, shown with a line illustration. */
@@ -44,6 +51,14 @@ export interface Destination {
   name: string;
   blurb: string;
   art: DestinationArt;
+}
+
+/** A warm, handwritten-style closing note from the couple. */
+export interface DestinationsNote {
+  title: string;
+  body: string;
+  /** Optional sign-off, e.g. "Varnit & Akshita". */
+  signature?: string;
 }
 
 interface BaseCard {
@@ -59,16 +74,21 @@ export interface InfoCard extends BaseCard {
   action?: TravelLink;
 }
 
-/** "Getting to Lucknow" — two visual travel options. */
+/** "Getting to Lucknow" — a cinematic vertical journey timeline. */
 export interface RoutesCard extends BaseCard {
   kind: "routes";
-  options: RouteOption[];
+  subtitle: string;
+  journey: Journey;
+  note: string;
+  chips: JourneyChip[];
 }
 
-/** "Extend Your Journey" — two illustrated destination tiles. */
+/** "Discover Beyond Lucknow" — illustrated destination tiles + a closing note. */
 export interface DestinationsCard extends BaseCard {
   kind: "destinations";
+  subtitle: string;
   destinations: Destination[];
+  note: DestinationsNote;
 }
 
 export type TravelCard = InfoCard | RoutesCard | DestinationsCard;
@@ -101,43 +121,52 @@ export const travelContent: TravelContent = {
       id: "getting-there",
       icon: "flight",
       title: "Getting to Lucknow",
-      options: [
-        {
-          id: "direct",
-          heading: "Fly direct",
-          caption: "Straight to Lucknow.",
-          stops: [{ city: "Lucknow", code: "LKO" }],
-        },
-        {
-          id: "via-delhi",
-          heading: "Via Delhi",
-          caption: "Connect onward.",
-          stops: [
-            { city: "Delhi", code: "DEL" },
-            { city: "Lucknow", code: "LKO" },
-          ],
-        },
+      subtitle: "Your journey to our celebration begins here.",
+      journey: {
+        origin: "International Flight",
+        hub: { city: "Delhi", code: "DEL" },
+        destination: { city: "Lucknow", code: "LKO" },
+        arrivalTitle: "Your celebration begins here.",
+        arrivalSubtitle: "Varnit & Akshita await you.",
+      },
+      note: "Most international guests arrive via Delhi before taking a short domestic flight to Lucknow. Depending on your departure city, direct international connections to Lucknow may also be available.",
+      chips: [
+        { icon: "flight", label: "Around 1 hour domestic flight from Delhi" },
+        { icon: "road", label: "Around 6–7 hours by road from Delhi" },
       ],
     },
     {
       kind: "destinations",
       id: "extend",
       icon: "explore",
-      title: "Extend Your Journey",
+      title: "Discover Beyond Lucknow",
+      subtitle:
+        "If you have a little extra time during your visit, these nearby destinations are well worth exploring.",
       destinations: [
         {
           id: "agra",
           name: "Agra",
-          blurb: "Visit the iconic Taj Mahal before the wedding.",
+          blurb: "Home to the iconic Taj Mahal, Agra is one of India's most celebrated heritage cities.",
           art: "taj",
+        },
+        {
+          id: "lucknow",
+          name: "Lucknow",
+          blurb: "Discover the City of Nawabs through its architecture, cuisine and timeless culture.",
+          art: "imambara",
         },
         {
           id: "ayodhya",
           name: "Ayodhya",
-          blurb: "Explore Ayodhya after the celebrations.",
-          art: "temple",
+          blurb: "Explore the spiritual city of Ayodhya, home to the magnificent Shri Ram Mandir.",
+          art: "ram",
         },
       ],
+      note: {
+        title: "A Little More to Discover",
+        body: "If your schedule allows, we hope you'll take the opportunity to explore some of North India's most beautiful destinations and create memories beyond our wedding weekend.",
+        signature: "Varnit & Akshita",
+      },
     },
   ],
 };

@@ -24,35 +24,6 @@ export function PlaneMark({ className }: ArtProps) {
   );
 }
 
-/**
- * Hero motif: a delicate dotted flight-path arc with a paper plane arriving at
- * the crest — an editorial "journey" mark for the section header.
- */
-export function HeroFlightMotif({ className }: ArtProps) {
-  return (
-    <svg aria-hidden="true" className={className} fill="none" viewBox="0 0 148 46">
-      <circle cx="10" cy="38" fill="currentColor" r="2.2" />
-      <path
-        d="M10 38C46 34 74 24 118 8"
-        stroke="currentColor"
-        strokeDasharray="0.5 6"
-        strokeLinecap="round"
-        strokeWidth="1.4"
-      />
-      {/* Paper plane at the crest, banking up-right. */}
-      <g transform="translate(120 6) rotate(28)">
-        <path
-          d="M0 6 18 0 8 18 5.5 11 Z"
-          stroke="currentColor"
-          strokeLinejoin="round"
-          strokeWidth="1.3"
-        />
-        <path d="M18 0 5.5 11" stroke="currentColor" strokeLinecap="round" strokeWidth="1.1" />
-      </g>
-    </svg>
-  );
-}
-
 /** Minimal Taj Mahal — central onion dome, chhatris, two flanking minarets. */
 export function TajMahalLine({ className }: ArtProps) {
   return (
@@ -86,28 +57,70 @@ export function TajMahalLine({ className }: ArtProps) {
   );
 }
 
-/** Minimal Nagara-style temple — curvilinear shikhara, amalaka + kalash, doorway. */
-export function TempleLine({ className }: ArtProps) {
+/**
+ * Minimal Bara Imambara (Lucknow) — a grand Nawabi facade: three arches, a
+ * central dome with finial, flanking chhatri domes, and corner minaret tips.
+ */
+export function BaraImambaraLine({ className }: ArtProps) {
   return (
     <svg aria-hidden="true" className={cn("text-antique-gold", className)} fill="none" viewBox="0 0 72 54">
       <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.3">
-        {/* plinth + sanctum base */}
-        <path d="M8 50h56" />
-        <path d="M24 50V33h24v17" />
+        {/* ground + facade block */}
+        <path d="M4 50h64" />
+        <path d="M12 50V24h48v26" />
+        {/* three arches */}
+        <path d="M30 50V36a6 6 0 0 1 12 0v14" />
+        <path d="M17 50V40a3.5 3.5 0 0 1 7 0v10" />
+        <path d="M48 50V40a3.5 3.5 0 0 1 7 0v10" />
+        {/* cornice */}
+        <path d="M12 24h48" />
+        {/* central dome + finial */}
+        <path d="M30 24c0-7 3-11 6-11s6 4 6 11" />
+        <path d="M36 13V8" />
+        <circle cx="36" cy="6.6" fill="currentColor" r="1.2" stroke="none" />
+        {/* flanking chhatri domes */}
+        <path d="M16 24c0-3.4 1.4-5 3-5s3 1.6 3 5" />
+        <path d="M50 24c0-3.4 1.4-5 3-5s3 1.6 3 5" />
+        {/* corner minaret tips */}
+        <path d="M12 24V16" />
+        <circle cx="12" cy="14.6" fill="currentColor" r="1" stroke="none" />
+        <path d="M60 24V16" />
+        <circle cx="60" cy="14.6" fill="currentColor" r="1" stroke="none" />
+      </g>
+    </svg>
+  );
+}
+
+/**
+ * Minimal Shri Ram Mandir (Ayodhya) — a tall central Nagara shikhara flanked by
+ * two smaller spires over a pillared plinth with a doorway; kalash finials.
+ */
+export function RamMandirLine({ className }: ArtProps) {
+  return (
+    <svg aria-hidden="true" className={cn("text-antique-gold", className)} fill="none" viewBox="0 0 72 54">
+      <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.3">
+        {/* platform + pillared plinth */}
+        <path d="M6 50h60" />
+        <path d="M14 50V40h44v10" />
+        <path d="M23 50V40M32 50V40M41 50V40M50 50V40" />
         {/* doorway */}
-        <path d="M31 50v-7a5 5 0 0 1 10 0v7" />
-        {/* shikhara spire */}
-        <path d="M24 33C24 24 28 12 36 6c8 6 12 18 12 27" />
-        {/* ribs following the curve */}
-        <path d="M36 8v25" />
-        <path d="M30 14c-1.4 8-1.4 13 0 19" />
-        <path d="M42 14c1.4 8 1.4 13 0 19" />
-        {/* horizontal bands */}
-        <path d="M27 27h18M29 20.5h14" />
-        {/* amalaka + kalash */}
-        <ellipse cx="36" cy="6.4" rx="4" ry="1.7" />
-        <path d="M36 6.4V2.4" />
-        <circle cx="36" cy="1.8" fill="currentColor" r="1.2" stroke="none" />
+        <path d="M33 50v-6a3 3 0 0 1 6 0v6" />
+        {/* central shikhara */}
+        <path d="M30 40C30 28 32 16 36 11" />
+        <path d="M42 40C42 28 40 16 36 11" />
+        <path d="M36 12V40" />
+        <path d="M31 22c-1 7-1 11 0 18M41 22c1 7 1 11 0 18" />
+        {/* central amalaka + kalash */}
+        <ellipse cx="36" cy="10" rx="3.2" ry="1.5" />
+        <path d="M36 10V6.4" />
+        <circle cx="36" cy="5.2" fill="currentColor" r="1.1" stroke="none" />
+        {/* flanking spires */}
+        <path d="M16 40C16 33 18 28 20 26c2 2 4 7 4 14" />
+        <path d="M20 26V22" />
+        <circle cx="20" cy="21" fill="currentColor" r="0.9" stroke="none" />
+        <path d="M48 40c0-7 2-12 4-14 2 2 4 7 4 14" />
+        <path d="M52 26V22" />
+        <circle cx="52" cy="21" fill="currentColor" r="0.9" stroke="none" />
       </g>
     </svg>
   );
@@ -115,5 +128,6 @@ export function TempleLine({ className }: ArtProps) {
 
 export const DESTINATION_ART = {
   taj: TajMahalLine,
-  temple: TempleLine,
+  imambara: BaraImambaraLine,
+  ram: RamMandirLine,
 } as const;

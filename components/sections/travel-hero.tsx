@@ -4,7 +4,7 @@ import { motion, type Variants } from "framer-motion";
 import { OrnamentalDivider } from "@/components/opening/ornamental-divider";
 import { SOFT_EASE } from "@/lib/animation/motion";
 import { useSafeReducedMotion } from "@/lib/hooks/use-safe-reduced-motion";
-import { HeroFlightMotif } from "./travel-art";
+import { FlightMotif } from "./travel-flight-motif";
 
 interface TravelHeroProps {
   eyebrow: string;
@@ -47,7 +47,7 @@ export function TravelHero({ eyebrow, title, intro, headingId }: TravelHeroProps
       whileInView="visible"
     >
       <motion.div className="text-antique-gold" variants={motif}>
-        <HeroFlightMotif className="h-10 w-auto sm:h-11" />
+        <FlightMotif className="h-10 w-auto sm:h-11" />
       </motion.div>
 
       <motion.p
