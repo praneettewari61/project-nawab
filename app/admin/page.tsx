@@ -1,4 +1,4 @@
-import { Check, X } from "lucide-react";
+import { Check, Download, X } from "lucide-react";
 import type { Metadata } from "next";
 import { DbNotConfiguredError, getStore, type RsvpRecord } from "@/lib/db";
 
@@ -54,13 +54,25 @@ export default async function AdminPage() {
   return (
     <main className="min-h-dvh bg-ivory px-4 py-10 md:px-8 md:py-14">
       <div className="mx-auto w-full max-w-5xl">
-        <header className="mb-8 md:mb-10">
-          <p className="font-sans text-caption font-semibold uppercase tracking-[0.36em] text-antique-gold">
-            Varnit &amp; Akshita
-          </p>
-          <h1 className="mt-2 font-display text-[2.5rem] font-medium leading-tight text-deep-maroon md:text-h1">
-            RSVP Responses
-          </h1>
+        <header className="mb-8 flex flex-wrap items-end justify-between gap-4 md:mb-10">
+          <div>
+            <p className="font-sans text-caption font-semibold uppercase tracking-[0.36em] text-antique-gold">
+              Varnit &amp; Akshita
+            </p>
+            <h1 className="mt-2 font-display text-[2.5rem] font-medium leading-tight text-deep-maroon md:text-h1">
+              RSVP Responses
+            </h1>
+          </div>
+          {records.length > 0 ? (
+            <a
+              className="inline-flex items-center gap-2 rounded-full border border-antique-gold bg-warm-white px-5 py-2.5 font-sans text-sm font-semibold text-antique-gold transition-colors hover:bg-antique-gold hover:text-warm-white"
+              download
+              href="/admin/export"
+            >
+              <Download size={16} strokeWidth={2} />
+              Download for Excel
+            </a>
+          ) : null}
         </header>
 
         {notConfigured ? (
