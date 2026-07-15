@@ -1,15 +1,18 @@
 "use client";
 
 import { AnimatePresence, motion, type Variants } from "framer-motion";
-import { ArrowUpRight, CalendarPlus, ChevronDown, MapPin } from "lucide-react";
+import { ArrowUpRight, CalendarPlus, MapPin } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import { CELEBRATION_ART, CELEBRATION_BANNER } from "@/components/sections/celebration-art";
+import { CardAtmosphere } from "@/components/sections/celebration-atmosphere";
 import {
+  CornerFiligree,
+  ExpandEmblem,
   FloatingPetals,
   GoldInkDivider,
   JaaliBackdrop,
   LotusFlourish,
+  MandalaMark,
 } from "@/components/sections/celebration-ornaments";
 import { RingsMark } from "@/components/sections/chapter-art";
 import { Container } from "@/components/ui";
@@ -24,9 +27,17 @@ import { cn } from "@/lib/utils";
 /** Soft, mood-specific ambient wash behind each card — no bright colour. */
 const AMBIENT: Record<CelebrationArt, string> = {
   haldi: "radial-gradient(130% 90% at 50% 0%, rgba(215,155,53,0.10), transparent 68%)",
-  sangeet: "radial-gradient(130% 90% at 50% 0%, rgba(176,141,87,0.11), transparent 68%)",
-  wedding: "radial-gradient(130% 95% at 50% 0%, rgba(201,154,78,0.09), transparent 66%)",
+  sangeet: "radial-gradient(130% 90% at 50% 0%, rgba(150,88,140,0.10), transparent 68%)",
+  wedding: "radial-gradient(130% 95% at 50% 0%, rgba(214,196,150,0.11), transparent 66%)",
   reception: "radial-gradient(130% 90% at 50% 0%, rgba(205,185,143,0.12), transparent 68%)",
+};
+
+/** Hand-painted illustration for each card, with a focal point for cropping. */
+const BANNER_IMG: Record<CelebrationArt, { src: string; position: string }> = {
+  haldi: { src: "/images/celebrations/haldi.webp", position: "32% center" },
+  sangeet: { src: "/images/celebrations/sangeet.webp", position: "48% center" },
+  wedding: { src: "/images/celebrations/wedding.webp", position: "42% center" },
+  reception: { src: "/images/celebrations/reception.webp", position: "30% center" },
 };
 
 const cardVariants: Variants = {
@@ -37,27 +48,23 @@ const cardVariants: Variants = {
     transition: { duration: 0.6, ease: SOFT_EASE, when: "beforeChildren", staggerChildren: 0.08 },
   },
 };
-const iconVariants: Variants = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: SOFT_EASE } },
+/** The illustration settles from a whisper of zoom as the card reveals. */
+const imgReveal: Variants = {
+  hidden: { opacity: 0, scale: 1.03 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: SOFT_EASE } },
 };
-
 /* The handcrafted opening sequence inside an expanded card. */
 const panelStagger: Variants = {
   hidden: {},
-  visible: { transition: { delayChildren: 0.1, staggerChildren: 0.08, when: "beforeChildren" } },
+  visible: { transition: { delayChildren: 0.05, staggerChildren: 0.055, when: "beforeChildren" } },
 };
 const panelItem: Variants = {
   hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: SOFT_EASE } },
-};
-const bannerReveal: Variants = {
-  hidden: { opacity: 0, scale: 1.05 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: SOFT_EASE } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: SOFT_EASE } },
 };
 const chipsContainer: Variants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.07 } },
+  visible: { transition: { staggerChildren: 0.06 } },
 };
 const chipItem: Variants = {
   hidden: { opacity: 0, y: 8, scale: 0.96 },
@@ -82,8 +89,7 @@ function GoldRipple() {
 function EventCard({ event }: { event: CelebrationEvent }) {
   const reduce = useSafeReducedMotion();
   const [open, setOpen] = useState(false);
-  const Art = CELEBRATION_ART[event.art];
-  const Banner = CELEBRATION_BANNER[event.art];
+  const img = BANNER_IMG[event.art];
   const panelId = `celebration-${event.id}-panel`;
   const buttonId = `celebration-${event.id}-button`;
 
@@ -91,64 +97,101 @@ function EventCard({ event }: { event: CelebrationEvent }) {
     <motion.li className="list-none" variants={cardVariants}>
       <div
         className={cn(
-          "paper-texture group relative overflow-hidden rounded-card border border-antique-gold/25 bg-warm-white shadow-card",
+          "paper-texture group relative overflow-hidden rounded-card border border-antique-gold/30 bg-warm-white shadow-card",
           "transition-[transform,box-shadow,border-color] duration-500 ease-out",
-          "[@media(hover:hover)]:hover:-translate-y-[3px] [@media(hover:hover)]:hover:border-antique-gold/50 [@media(hover:hover)]:hover:shadow-card-hover",
+          "[@media(hover:hover)]:hover:-translate-y-[3px] [@media(hover:hover)]:hover:border-antique-gold/55 [@media(hover:hover)]:hover:shadow-card-hover",
           "motion-reduce:transition-none motion-reduce:hover:translate-y-0",
+          open && "-translate-y-[2px] border-antique-gold/45 shadow-card-hover",
         )}
       >
         {/* Mood ambient wash. */}
         <span aria-hidden="true" className="pointer-events-none absolute inset-0 z-0" style={{ background: AMBIENT[event.art] }} />
-        {/* Haldi alone drifts a few marigold petals. */}
-        {event.art === "haldi" ? <FloatingPetals className="z-0" count={4} tone="marigold" /> : null}
-        {/* Inset gold hairline — brightens on hover. */}
+        {/* Embossed paper — soft top highlight + inner depth. */}
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-[7px] z-0 rounded-[1.05rem] border border-antique-gold/12 transition-colors duration-500 group-hover:border-antique-gold/25 motion-reduce:transition-none"
+          className="pointer-events-none absolute inset-0 z-[2] rounded-card shadow-[inset_0_1px_0_rgba(255,253,248,0.7),inset_0_-16px_28px_-20px_rgba(94,67,34,0.16)]"
+        />
+        {/* Faint vignette for a richer handmade-paper surface. */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-[2] rounded-card"
+          style={{ background: "radial-gradient(135% 105% at 50% 0%, transparent 60%, rgba(94,67,34,0.05))" }}
+        />
+        {/* Inset gold hairline — frames the card, brightens on hover. */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-[7px] z-[2] rounded-[1.05rem] border border-antique-gold/15 transition-colors duration-500 group-hover:border-antique-gold/30 motion-reduce:transition-none"
         />
 
-        {/* Closed essentials — always visible, toggles the panel. */}
+        {/* Closed header — hand-painted illustration + title; toggles the panel. */}
         <button
           aria-controls={panelId}
           aria-expanded={open}
-          className="group/tap relative z-[1] flex w-full items-center gap-4 p-6 text-left transition-transform duration-200 active:scale-[0.995] motion-reduce:transition-none sm:gap-5 sm:p-7"
+          className="group/tap relative z-[1] block w-full text-left"
           id={buttonId}
           onClick={() => setOpen((value) => !value)}
           type="button"
         >
-          <GoldRipple />
-          <span
-            aria-hidden="true"
-            className={cn(
-              "grid size-14 shrink-0 place-items-center rounded-full border border-antique-gold/35 bg-ivory/70 text-antique-gold",
-              "transition-transform duration-500 ease-out [@media(hover:hover)]:group-hover:scale-105 motion-reduce:transition-none",
-            )}
-          >
-            <motion.span variants={iconVariants}>
-              <Art className="h-9 w-auto" />
-            </motion.span>
-          </span>
+          <div className="flex flex-col sm:flex-row sm:items-stretch">
+            {/* Illustration */}
+            <div className="relative h-44 w-full shrink-0 overflow-hidden sm:h-auto sm:min-h-[13.5rem] sm:w-[48%]">
+              <motion.div className="absolute inset-0" variants={imgReveal}>
+                <motion.div
+                  animate={reduce ? { scale: 1 } : { scale: open ? 1.06 : 1 }}
+                  className="absolute inset-0 will-change-transform"
+                  transition={
+                    reduce
+                      ? { duration: 0 }
+                      : open
+                        ? { duration: 16, ease: "linear" }
+                        : { duration: 0.7, ease: SOFT_EASE }
+                  }
+                >
+                  <div className="absolute inset-0 transition-transform duration-700 ease-out [@media(hover:hover)]:group-hover:scale-[1.02] motion-reduce:transition-none">
+                    <Image
+                      alt=""
+                      className="object-cover"
+                      fill
+                      sizes="(max-width: 640px) 100vw, 380px"
+                      src={img.src}
+                      style={{ objectPosition: img.position }}
+                    />
+                  </div>
+                </motion.div>
+              </motion.div>
+              {/* Subtle ivory wash so the art reads as printed onto the paper. */}
+              <span aria-hidden="true" className="pointer-events-none absolute inset-0 bg-ivory/[0.10]" />
+              {/* Foreground atmosphere — light, petals, particles. */}
+              <CardAtmosphere art={event.art} />
+              {/* Gently fade the painting into the paper — let the art breathe. */}
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-warm-white via-warm-white/45 to-transparent sm:hidden"
+              />
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-y-0 right-0 hidden w-24 bg-gradient-to-l from-warm-white via-warm-white/45 to-transparent sm:block"
+              />
+            </div>
 
-          <span className="min-w-0 flex-1">
-            <span className="block font-display text-h3 font-medium leading-tight text-deep-maroon">{event.name}</span>
-            <span className="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-0.5 font-sans text-caption font-medium uppercase tracking-[0.16em] text-charcoal/55">
-              {event.date}
-              <span aria-hidden="true" className="text-antique-gold">
-                &middot;
+            {/* Title block — nudged up to overlap the faded artwork on mobile. */}
+            <div className="relative z-[3] -mt-7 flex flex-1 flex-col items-center justify-center gap-2 overflow-hidden px-9 pb-7 pt-3 text-center sm:mt-0 sm:py-9">
+              <GoldRipple />
+              {/* Tiny gold corner ornaments frame the content diagonally. */}
+              <CornerFiligree className="pointer-events-none absolute right-0 top-0 w-12 opacity-40" />
+              <CornerFiligree className="pointer-events-none absolute bottom-0 left-0 w-12 -scale-100 opacity-[0.22]" />
+              <span className="relative font-display text-h3 font-medium leading-tight text-deep-maroon">{event.name}</span>
+              <GoldInkDivider width={58} />
+              <span className="relative flex flex-wrap items-center justify-center gap-x-2.5 gap-y-0.5 font-sans text-caption font-medium uppercase tracking-[0.18em] text-charcoal/55">
+                {event.date}
+                <span aria-hidden="true" className="text-antique-gold">
+                  &middot;
+                </span>
+                {event.time}
               </span>
-              {event.time}
-            </span>
-          </span>
-
-          <ChevronDown
-            aria-hidden="true"
-            className={cn(
-              "shrink-0 text-antique-gold/70 transition-transform duration-300 motion-reduce:transition-none",
-              open && "rotate-180",
-            )}
-            size={22}
-            strokeWidth={1.6}
-          />
+              <ExpandEmblem className="absolute right-3 top-1/2 -translate-y-1/2" open={open} />
+            </div>
+          </div>
         </button>
 
         {/* Expanded detail. */}
@@ -169,25 +212,12 @@ function EventCard({ event }: { event: CelebrationEvent }) {
               }}
             >
               <motion.div animate="visible" initial={reduce ? false : "hidden"} variants={panelStagger}>
-                {/* Illustration banner. */}
-                <motion.div
-                  className="relative h-32 overflow-hidden border-t border-antique-gold/15"
-                  variants={bannerReveal}
-                >
-                  <Banner className="h-full w-full" />
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-warm-white to-transparent"
-                  />
-                </motion.div>
-
-                <div className="px-6 pb-6 pt-5 sm:px-7 sm:pb-7">
+                <div className="border-t border-antique-gold/15 px-6 pb-8 pt-7 sm:px-8 sm:pb-9">
                   <motion.div className="flex justify-center" variants={panelItem}>
-                    <GoldInkDivider delay={0.1} width={128} />
+                    <GoldInkDivider width={110} />
                   </motion.div>
-
                   <motion.p
-                    className="mt-4 flex items-center justify-center gap-2 text-center font-sans text-caption font-medium uppercase tracking-[0.16em] text-charcoal/60"
+                    className="mt-6 flex items-center justify-center gap-2 text-center font-sans text-caption font-medium uppercase tracking-[0.18em] text-charcoal/60"
                     variants={panelItem}
                   >
                     <MapPin aria-hidden="true" className="text-antique-gold" size={15} strokeWidth={1.7} />
@@ -195,22 +225,22 @@ function EventCard({ event }: { event: CelebrationEvent }) {
                   </motion.p>
 
                   <motion.p
-                    className="mx-auto mt-4 max-w-prose text-center font-display text-body-large italic leading-relaxed text-charcoal/80"
+                    className="mx-auto mt-5 max-w-prose text-center font-display text-body-large italic leading-loose text-charcoal/80"
                     variants={panelItem}
                   >
                     {event.description}
                   </motion.p>
 
                   <motion.p
-                    className="mt-6 text-center font-sans text-small font-semibold uppercase tracking-[0.24em] text-antique-gold"
+                    className="mt-8 text-center font-sans text-small font-semibold uppercase tracking-[0.26em] text-antique-gold"
                     variants={panelItem}
                   >
                     What to Expect
                   </motion.p>
-                  <motion.ul className="mt-3 flex flex-wrap justify-center gap-2" variants={chipsContainer}>
+                  <motion.ul className="mt-4 flex flex-wrap justify-center gap-2.5" variants={chipsContainer}>
                     {event.highlights.map((highlight) => (
                       <motion.li
-                        className="rounded-full border border-antique-gold/30 bg-ivory px-3.5 py-1.5 font-sans text-caption text-charcoal/75"
+                        className="rounded-full border border-antique-gold/30 bg-ivory px-4 py-2 font-sans text-caption text-charcoal/75"
                         key={highlight}
                         variants={chipItem}
                       >
@@ -220,7 +250,7 @@ function EventCard({ event }: { event: CelebrationEvent }) {
                   </motion.ul>
 
                   <motion.div
-                    className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center"
+                    className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center"
                     variants={panelItem}
                   >
                     <button
@@ -260,6 +290,10 @@ function EventCard({ event }: { event: CelebrationEvent }) {
                       />
                       <span className="sr-only"> on Google Maps (opens in a new tab)</span>
                     </a>
+                  </motion.div>
+
+                  <motion.div className="mt-7 flex justify-center" variants={panelItem}>
+                    <MandalaMark className="w-6 opacity-40" />
                   </motion.div>
                 </div>
               </motion.div>
@@ -328,7 +362,7 @@ export function CelebrationsChapter() {
 
         {/* Itinerary */}
         <motion.ol
-          className="relative mx-auto mt-12 flex max-w-2xl flex-col gap-5 md:mt-16"
+          className="relative mx-auto mt-12 flex max-w-2xl flex-col gap-7 md:mt-16 md:gap-8"
           initial={reduce ? false : "hidden"}
           variants={staggerContainer}
           viewport={{ once: true, amount: 0.15 }}

@@ -141,6 +141,76 @@ export function FloatingPetals({ className, tone = "gold", count = 5 }: Floating
   );
 }
 
+/** A delicate Mughal cusped-arch filigree for a card's top corner. */
+export function CornerFiligree({ className }: OrnamentProps) {
+  return (
+    <svg aria-hidden="true" className={cn("text-antique-gold", className)} fill="none" viewBox="0 0 72 72">
+      <g stroke="currentColor" strokeLinecap="round" strokeWidth="1">
+        <path d="M46 0A26 26 0 0 0 72 26" opacity="0.55" />
+        <path d="M32 0A40 40 0 0 0 72 40" opacity="0.4" />
+        <path d="M18 0A54 54 0 0 0 72 54" opacity="0.28" />
+        {/* radial hairlines */}
+        <path d="M72 8 47 5M72 20 52 12M72 33 58 22" opacity="0.3" strokeWidth="0.8" />
+        {/* small cusp buds on the inner arc */}
+        <circle cx="46" cy="1.5" fill="currentColor" opacity="0.5" r="1" stroke="none" />
+        <circle cx="70.5" cy="26" fill="currentColor" opacity="0.5" r="1" stroke="none" />
+      </g>
+    </svg>
+  );
+}
+
+/** An ornamental gold emblem replacing the plain chevron; unfolds on open. */
+export function ExpandEmblem({ open, className }: OrnamentProps & { open: boolean }) {
+  const reduce = useSafeReducedMotion();
+  return (
+    <span
+      className={cn(
+        "grid size-8 place-items-center rounded-full border border-antique-gold/45 bg-ivory/70 text-antique-gold",
+        "transition-colors duration-500 group-hover:border-antique-gold/70 motion-reduce:transition-none",
+        className,
+      )}
+    >
+      <motion.svg
+        animate={{ rotate: open ? 180 : 0 }}
+        aria-hidden="true"
+        className="h-4 w-4"
+        fill="none"
+        transition={{ duration: reduce ? 0 : 0.6, ease: SOFT_EASE }}
+        viewBox="0 0 24 24"
+      >
+        <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 16C10.6 13.6 9.4 11.8 7.4 10.2" strokeWidth="1.3" />
+          <path d="M12 16C13.4 13.6 14.6 11.8 16.6 10.2" strokeWidth="1.3" />
+          <path d="M12 16V9.4" strokeWidth="1.1" />
+          <circle cx="12" cy="8.2" fill="currentColor" r="1" stroke="none" />
+        </g>
+      </motion.svg>
+    </span>
+  );
+}
+
+/** A faint concentric mandala, used as a ceremonial paper watermark. */
+export function MandalaMark({ className }: OrnamentProps) {
+  const outer = Array.from({ length: 16 }, (_, i) => i * 22.5);
+  const inner = Array.from({ length: 8 }, (_, i) => i * 45);
+  return (
+    <svg aria-hidden="true" className={cn("text-antique-gold", className)} fill="none" viewBox="0 0 100 100">
+      <g stroke="currentColor" strokeWidth="1">
+        <circle cx="50" cy="50" r="47" />
+        <circle cx="50" cy="50" r="38" />
+        {outer.map((a) => (
+          <ellipse cx="50" cy="16" key={a} rx="3.2" ry="9" transform={`rotate(${a} 50 50)`} />
+        ))}
+        <circle cx="50" cy="50" r="25" />
+        {inner.map((a) => (
+          <path d="M50 50 50 30" key={a} strokeWidth="0.9" transform={`rotate(${a + 22.5} 50 50)`} />
+        ))}
+        <circle cx="50" cy="50" fill="currentColor" r="4" stroke="none" />
+      </g>
+    </svg>
+  );
+}
+
 /** A tiny lotus flourish to flank headings. */
 export function LotusFlourish({ className }: OrnamentProps) {
   return (
