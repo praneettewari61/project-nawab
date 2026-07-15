@@ -6,7 +6,6 @@ export const dynamic = "force-dynamic";
 function str(value: unknown): string {
   return typeof value === "string" ? value.trim() : "";
 }
-
 /** Parse and validate the incoming body into a clean RsvpInput, or return an error. */
 function parse(body: unknown): { input: RsvpInput } | { error: string } {
   if (typeof body !== "object" || body === null) {
