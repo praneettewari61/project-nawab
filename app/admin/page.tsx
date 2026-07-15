@@ -4,7 +4,6 @@ import { DbNotConfiguredError, getStore, type RsvpRecord } from "@/lib/db";
 
 /** Always render fresh — this is a live view of the responses table. */
 export const dynamic = "force-dynamic";
-
 export const metadata: Metadata = {
   title: "RSVP Responses",
   robots: { index: false, follow: false },
