@@ -60,11 +60,14 @@ serverless cold starts hurt. Two sources are handled:
    Functions). It keeps instances warm and reuses them across invocations. It is on
    by default for new projects — just confirm it's enabled.
 2. **The Neon database** (free tier scales to zero). Keep it awake by pinging
-   `/api/health` on a short interval:
-   - `vercel.json` already defines a **Cron** every 5 minutes hitting `/api/health`.
-     This runs on the Pro plan. On the **Hobby** plan crons only fire once per day,
-     so instead point a **free external uptime monitor** (e.g. UptimeRobot or
-     cron-job.org) at `https://<your-domain>/api/health` every 5 minutes.
+   `/api/health` on a short interval with a **free external uptime monitor**
+   (e.g. [UptimeRobot](https://uptimerobot.com) or [cron-job.org](https://cron-job.org)):
+   point it at `https://<your-domain>/api/health` every 5 minutes.
+   - On the **Hobby** plan, don't use a Vercel Cron for this — Hobby only allows
+     a once-a-day schedule (a more frequent one *fails the deploy*), and once a
+     day is useless for warming. The external monitor is the way.
+   - On **Pro/Enterprise**, you can instead add a `vercel.json` cron:
+     `{ "crons": [{ "path": "/api/health", "schedule": "*/5 * * * *" }] }`.
 
 `/api/health` does a cheap `SELECT 1`, which both keeps the function hot and wakes
 the Neon compute, so the first real guest never pays the cold-start cost.

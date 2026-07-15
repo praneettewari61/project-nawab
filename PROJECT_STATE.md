@@ -89,7 +89,7 @@ Self-contained, no third-party service. Free-tier sized for a ~500-guest list.
 - **Storage** (`lib/db.ts`): **Neon Postgres** in production via `@neondatabase/serverless` (HTTP driver — no connection cold start), table `rsvps` auto-created on first use. **Dev fallback**: when `DATABASE_URL` is unset and not in production, RSVPs save to a JSON file in the OS temp dir, so local dev works with zero setup. Production without a DB throws `DbNotConfiguredError` (never writes to Vercel's read-only FS).
 - **Admin**: `app/admin/page.tsx` (server component, `force-dynamic`) lists responses + summary counts (Responses / Accepting / Declining / Guests coming), `noindex`.
 - **Auth**: `proxy.ts` (Next 16's renamed `middleware`) — HTTP Basic Auth over `/admin` using `ADMIN_USER` / `ADMIN_PASSWORD`. Realm string must stay ASCII (header = Latin-1). Fails closed if creds unset.
-- **Cold starts**: `app/api/health/route.ts` (`SELECT 1`) + `vercel.json` cron (`*/5` — Pro only; on Hobby use a free external pinger). Enable Vercel **Fluid Compute** to keep the function warm. See README → "Avoiding cold starts".
+- **Cold starts**: `app/api/health/route.ts` (`SELECT 1`) kept warm by a free external uptime pinger every 5 min (UptimeRobot / cron-job.org). No `vercel.json` cron — Hobby rejects sub-daily schedules at deploy time, and daily is useless for warming; Pro users can add one. Enable Vercel **Fluid Compute** to keep the function warm. See README → "Avoiding cold starts".
 - **Env**: `DATABASE_URL` (auto-injected by the Vercel Neon store), `ADMIN_USER`, `ADMIN_PASSWORD`. Template in `.env.example`; local values in `.env.local` (gitignored).
 
 ---
