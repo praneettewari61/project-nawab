@@ -48,6 +48,27 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  // Reliable autostart: play on the first genuine user interaction anywhere on
+  // the page (browsers only allow audio to start inside a gesture). If a play
+  // attempt is refused it stays armed for the next interaction, and it detaches
+  // itself once playback begins.
+  useEffect(() => {
+    if (!music.autoPlayOnEnter) return;
+    const events = ["pointerdown", "touchend", "keydown"];
+    const unlock = () => {
+      const audio = audioRef.current;
+      if (!audio || !audio.paused) return;
+      void audio
+        .play()
+        .then(() => events.forEach((event) => document.removeEventListener(event, unlock)))
+        .catch(() => {
+          /* no gesture credit yet — keep listening for the next interaction */
+        });
+    };
+    events.forEach((event) => document.addEventListener(event, unlock));
+    return () => events.forEach((event) => document.removeEventListener(event, unlock));
+  }, []);
+
   const enable = useCallback(() => {
     const audio = audioRef.current;
     if (audio && audio.paused) {
