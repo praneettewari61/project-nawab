@@ -2,9 +2,10 @@
  * Save the Date (with a live countdown) and the wedding Venue. Both are
  * config-driven — swap values here and the UI updates with no code changes.
  *
- * The wedding date (12 December 2026) and the venue are confirmed, real details.
- * Only the exact ceremony time is assumed: the countdown targets the start of
- * the wedding day in IST — set a precise time on `targetDate` when known.
+ * The celebration spans two days (11 & 12 December 2026) and the venue are
+ * confirmed, real details. The countdown targets the start of Haldi on the
+ * 11th (12:00 PM IST, matching the `celebrations` schedule in chapters.ts) —
+ * that's when guests should arrive, since both days are part of the wedding.
  */
 
 export interface SaveTheDateContent {
@@ -34,10 +35,10 @@ export interface VenueContent {
 }
 
 export const saveTheDate: SaveTheDateContent = {
-  eyebrow: "Save the Date",
+  eyebrow: "Save the Date(s)",
   lead: "We can't wait to celebrate with you",
-  displayDate: "12 December 2026",
-  targetDate: "2026-12-12T00:00:00+05:30",
+  displayDate: "11 & 12 December 2026",
+  targetDate: "2026-12-11T12:00:00+05:30",
 };
 
 export const venue: VenueContent = {

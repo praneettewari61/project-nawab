@@ -243,8 +243,16 @@ export function SketchReveal({ guestName, onComplete }: SketchRevealProps) {
   // Shared pieces (only one branch mounts at a time, so refs attach correctly).
   const artwork = (
     <>
+      {/* Hidden until the sketch is actually painted onto the canvas above it —
+          otherwise the photo can flash unobscured while the sketch image is
+          still loading (most visible on a cold cache). */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img alt="" className="absolute inset-0 h-full w-full object-cover object-center" src={photoSrc} />
+      <img
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover object-center"
+        src={photoSrc}
+        style={{ opacity: ready ? 1 : 0 }}
+      />
       <canvas
         aria-label="Draw to reveal the photograph"
         className="absolute inset-0 h-full w-full touch-none transition-opacity duration-700 ease-out"
@@ -276,7 +284,7 @@ export function SketchReveal({ guestName, onComplete }: SketchRevealProps) {
         initial={false}
         transition={{ duration: 0.6, ease: SOFT_EASE }}
       >
-        Draw anywhere to reveal our first memory
+        Draw anywhere on the screen
       </motion.p>
     </>
   );
