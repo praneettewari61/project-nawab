@@ -35,7 +35,7 @@ export interface VenueContent {
 
 export const saveTheDate: SaveTheDateContent = {
   eyebrow: "Save the Date",
-  lead: "So please join us…",
+  lead: "We can't wait to celebrate with you",
   displayDate: "12 December 2026",
   targetDate: "2026-12-12T00:00:00+05:30",
 };

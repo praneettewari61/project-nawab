@@ -64,7 +64,7 @@ export function SiteNav({ monogram }: SiteNavProps) {
       {/* Desktop — unchanged: monogram + links + RSVP */}
       <motion.nav
         aria-label="Primary"
-        className="pointer-events-auto mx-auto hidden max-w-4xl items-center justify-between gap-3 rounded-full border border-antique-gold/20 bg-warm-white/85 py-2 pl-4 pr-2 shadow-[0_8px_30px_rgb(94_67_34/12%)] backdrop-blur-md sm:flex sm:gap-6 sm:py-2.5 sm:pl-7 sm:pr-3"
+        className="pointer-events-auto mx-auto hidden max-w-4xl items-center justify-between gap-3 rounded-full border border-antique-gold/20 bg-warm-white/70 py-1.5 pl-4 pr-2 shadow-[0_8px_30px_rgb(94_67_34/12%)] backdrop-blur-md sm:flex sm:gap-6 sm:py-2 sm:pl-7 sm:pr-2.5"
         {...enter}
       >
         <button
@@ -102,7 +102,7 @@ export function SiteNav({ monogram }: SiteNavProps) {
       {/* Mobile — every section visible, no hidden menu */}
       <motion.nav
         aria-label="Primary"
-        className="pointer-events-auto flex items-center gap-1 rounded-full border border-antique-gold/20 bg-warm-white/90 p-1.5 shadow-[0_8px_30px_rgb(94_67_34/12%)] backdrop-blur-md sm:hidden"
+        className="pointer-events-auto flex items-center gap-1 rounded-full border border-antique-gold/20 bg-warm-white/80 p-1.5 shadow-[0_8px_30px_rgb(94_67_34/12%)] backdrop-blur-md sm:hidden"
         {...enter}
       >
         <MusicToggle

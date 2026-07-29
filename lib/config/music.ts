@@ -27,8 +27,8 @@ export interface MusicContent {
 }
 
 export const music: MusicContent = {
-  src: "/audio/wedding-song.mp3",
-  title: "Aarzu",
+  src: "/audio/Haven.mp3",
+  title: "Haven",
   artist: "",
   loop: true,
   volume: 0.4,
