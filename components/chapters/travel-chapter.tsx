@@ -13,7 +13,7 @@ const CARD_SPAN: Record<TravelCardData["kind"], string> = {
 /** Travel Information as a chapter body (no section transition — it lives in the hub now). */
 export function TravelChapter() {
   return (
-    <Container className="py-14 md:py-20">
+    <Container className="pt-6 pb-14 md:pb-20 md:pt-12">
       <TravelHero
         eyebrow={travelContent.eyebrow}
         headingId="travel-chapter-heading"
@@ -21,7 +21,7 @@ export function TravelChapter() {
         title={travelContent.title}
       />
 
-      <ul className="mx-auto mt-12 grid max-w-5xl items-start gap-5 sm:gap-6 md:mt-16 md:grid-cols-12">
+      <ul className="mx-auto mt-6 grid max-w-5xl items-start gap-5 sm:gap-6 md:mt-10 md:grid-cols-12">
         {travelContent.cards.map((card, index) => (
           <TravelCard card={card} className={CARD_SPAN[card.kind]} index={index} key={card.id} />
         ))}

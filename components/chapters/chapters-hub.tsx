@@ -57,12 +57,6 @@ export function ChaptersHub() {
           <motion.div variants={revealItem}>
             <OrnamentalDivider width={120} />
           </motion.div>
-          <motion.p
-            className="max-w-md font-display text-body-large italic text-charcoal/60 sm:text-h3"
-            variants={revealItem}
-          >
-            {chaptersHub.intro}
-          </motion.p>
         </motion.div>
 
         <motion.ul

@@ -17,14 +17,12 @@ export interface ChapterCard {
 export interface ChaptersHubContent {
   eyebrow: string;
   title: string;
-  intro: string;
   cards: ChapterCard[];
 }
 
 export const chaptersHub: ChaptersHubContent = {
   eyebrow: "Explore & Celebrate",
   title: "Everything for the Day",
-  intro: "Three short chapters — open whichever you need.",
   cards: [
     {
       id: "travel",

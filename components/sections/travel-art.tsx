@@ -126,8 +126,48 @@ export function RamMandirLine({ className }: ArtProps) {
   );
 }
 
+/**
+ * Minimal Varanasi — riverside temple spires rising from the ghat steps by the
+ * Ganga, with kalash finials and a soft ripple of water.
+ */
+export function GhatsLine({ className }: ArtProps) {
+  return (
+    <svg aria-hidden="true" className={cn("text-antique-gold", className)} fill="none" viewBox="0 0 72 54">
+      <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.3">
+        {/* river + a soft ripple */}
+        <path d="M3 50h66" />
+        <path d="M6 47.4q2.4-1.3 4.8 0M61 47.4q2.4-1.3 4.8 0" />
+        {/* stepped ghat rising to the temple platform */}
+        <path d="M7 47h54" />
+        <path d="M11 44h46" />
+        <path d="M15 41h38" />
+        <path d="M19 38h34" />
+        {/* central shikhara + ribs */}
+        <path d="M30 38C30 27 32 19 36 15" />
+        <path d="M42 38C42 27 40 19 36 15" />
+        <path d="M32 24c-1 6-1 9 0 14M40 24c1 6 1 9 0 14" />
+        {/* amalaka + kalash */}
+        <ellipse cx="36" cy="14" rx="3" ry="1.4" />
+        <path d="M36 14V10.4" />
+        <circle cx="36" cy="9.2" fill="currentColor" r="1.1" stroke="none" />
+        {/* arched doorway */}
+        <path d="M33 38v-6a3 3 0 0 1 6 0v6" />
+        {/* left flanking spire */}
+        <path d="M22 38C22 31 23.5 26 25 24.5c1.5 1.5 3 6 3 13.5" />
+        <path d="M25 24.5V21" />
+        <circle cx="25" cy="19.8" fill="currentColor" r="0.9" stroke="none" />
+        {/* right flanking spire */}
+        <path d="M44 38c0-7.5 1.5-12.5 3-14 1.5 1.5 3 6.5 3 13.5" />
+        <path d="M47 24V20.5" />
+        <circle cx="47" cy="19.3" fill="currentColor" r="0.9" stroke="none" />
+      </g>
+    </svg>
+  );
+}
+
 export const DESTINATION_ART = {
   taj: TajMahalLine,
   imambara: BaraImambaraLine,
   ram: RamMandirLine,
+  ghats: GhatsLine,
 } as const;

@@ -40,7 +40,7 @@ export function TravelHero({ eyebrow, title, intro, headingId }: TravelHeroProps
 
   return (
     <motion.div
-      className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center sm:gap-6"
+      className="mx-auto flex max-w-2xl flex-col items-center gap-4 text-center sm:gap-5"
       initial={reduce ? false : "hidden"}
       variants={container}
       viewport={{ once: true, amount: 0.5 }}
