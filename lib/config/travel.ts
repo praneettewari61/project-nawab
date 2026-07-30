@@ -15,7 +15,7 @@
 /** Icon keys resolved to line-art marks in the card component (keeps this a data file). */
 export type TravelCardIcon = "visa" | "flight" | "explore";
 /** Illustration keys resolved to bespoke SVGs in `travel-art.tsx`. */
-export type DestinationArt = "taj" | "imambara" | "ram";
+export type DestinationArt = "taj" | "imambara" | "ram" | "ghats";
 
 export interface TravelLink {
   label: string;
@@ -144,22 +144,29 @@ export const travelContent: TravelContent = {
         "If you have a little extra time during your visit, these nearby destinations are well worth exploring.",
       destinations: [
         {
-          id: "agra",
-          name: "Agra",
-          blurb: "Home to the iconic Taj Mahal, Agra is one of India's most celebrated heritage cities.",
-          art: "taj",
-        },
-        {
           id: "lucknow",
           name: "Lucknow",
           blurb: "Discover the City of Nawabs through its architecture, cuisine and timeless culture.",
           art: "imambara",
         },
         {
+          id: "agra",
+          name: "Agra",
+          blurb: "Home to the iconic Taj Mahal, Agra is one of India's most celebrated heritage cities.",
+          art: "taj",
+        },
+        {
           id: "ayodhya",
           name: "Ayodhya",
-          blurb: "Explore the spiritual city of Ayodhya, home to the magnificent Shri Ram Mandir.",
+          blurb: "The birthplace of Lord Rama, Ayodhya is a city of devotion, ancient temples and spiritual significance.",
           art: "ram",
+        },
+        {
+          id: "varanasi",
+          name: "Varanasi",
+          blurb:
+            "One of the world's oldest living cities, renowned for the sacred Ganga Aarti, spiritual heritage, ancient ghats and timeless culture.",
+          art: "ghats",
         },
       ],
       note: {

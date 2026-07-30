@@ -90,12 +90,12 @@ export function TravelCard({ card, index, className }: TravelCardProps) {
       custom={index}
       initial={reduce ? false : "hidden"}
       variants={cardVariants}
-      viewport={{ once: true, amount: 0.25 }}
+      viewport={{ once: true, amount: 0.12 }}
       whileInView="visible"
     >
       <div
         className={cn(
-          "paper-texture group relative flex h-full flex-col rounded-card border border-antique-gold/25 bg-warm-white p-7 shadow-card sm:p-8",
+          "paper-texture group relative flex h-full flex-col rounded-card border border-antique-gold/25 bg-warm-white p-6 shadow-card sm:p-7",
           "transition-[transform,box-shadow,border-color] duration-500 ease-out will-change-transform",
           "[@media(hover:hover)]:hover:-translate-y-1.5 [@media(hover:hover)]:hover:border-antique-gold/45 [@media(hover:hover)]:hover:shadow-card-hover",
           "motion-reduce:transition-none motion-reduce:hover:translate-y-0",
@@ -188,25 +188,48 @@ function DestinationTile({ destination }: { destination: Destination }) {
   return (
     <motion.div
       className={cn(
-        "paper-texture group/tile flex flex-col items-center gap-3 rounded-[1.15rem] border border-antique-gold/20 bg-ivory/70 px-5 py-7 text-center",
+        "paper-texture group/tile overflow-hidden rounded-[1.15rem] border border-antique-gold/20 bg-ivory/70",
         "transition-colors duration-500 [@media(hover:hover)]:hover:border-antique-gold/45 [@media(hover:hover)]:hover:bg-ivory motion-reduce:transition-none",
       )}
       variants={tileVariants}
     >
-      <motion.div variants={artVariants}>
-        <Art
-          className={cn(
-            "h-16 w-auto text-antique-gold/85 transition-transform duration-500 ease-out will-change-transform",
-            "[@media(hover:hover)]:group-hover/tile:scale-[1.06] motion-reduce:transition-none",
-          )}
-        />
-      </motion.div>
-      <motion.h4 className="font-display text-h3 font-medium leading-none text-deep-maroon" variants={riseVariants}>
-        {destination.name}
-      </motion.h4>
-      <motion.p className="max-w-[26ch] font-sans text-caption leading-6 text-charcoal/60" variants={riseVariants}>
-        {destination.blurb}
-      </motion.p>
+      <div className="flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:gap-7 sm:p-7">
+        {/* Left: monument icon + name, divider, blurb */}
+        <div className="flex items-start gap-4 sm:w-[40%] sm:shrink-0">
+          <motion.span
+            aria-hidden="true"
+            className="grid size-12 shrink-0 place-items-center rounded-full border border-antique-gold/35 bg-ivory text-antique-gold shadow-[inset_0_0_0_1px_rgb(176_141_87/8%)]"
+            variants={artVariants}
+          >
+            <Art className="h-7 w-auto" />
+          </motion.span>
+          <div className="flex flex-col items-start gap-2.5">
+            <motion.h4 className="font-display text-h3 font-medium leading-none text-deep-maroon" variants={riseVariants}>
+              {destination.name}
+            </motion.h4>
+            <motion.div variants={riseVariants}>
+              <OrnamentalDivider width={72} />
+            </motion.div>
+            <motion.p className="max-w-[46ch] font-sans text-caption leading-6 text-charcoal/60" variants={riseVariants}>
+              {destination.blurb}
+            </motion.p>
+          </div>
+        </div>
+
+        {/* Right: the city's gold line-illustration. Multiply blends the paper
+            background into the tile so only the linework shows. */}
+        <motion.div className="w-full sm:flex-1" variants={artVariants}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            alt=""
+            className={cn(
+              "h-auto w-full mix-blend-multiply transition-transform duration-500 ease-out will-change-transform",
+              "[@media(hover:hover)]:group-hover/tile:scale-[1.015] motion-reduce:transition-none",
+            )}
+            src={`/images/discover/${destination.id}.webp`}
+          />
+        </motion.div>
+      </div>
     </motion.div>
   );
 }
@@ -244,7 +267,7 @@ function DestinationsBody({
       >
         {subtitle}
       </motion.p>
-      <motion.div className="relative mt-7 grid gap-4 sm:grid-cols-3 sm:gap-5" variants={tilesContainer}>
+      <motion.div className="relative mt-7 flex flex-col gap-4 sm:gap-5" variants={tilesContainer}>
         {destinations.map((destination) => (
           <DestinationTile destination={destination} key={destination.id} />
         ))}
