@@ -210,10 +210,10 @@ export function TravelJourney({ card }: { card: RoutesCard }) {
               <Image
                 alt="Akshita & Varnit monogram"
                 className="h-auto w-9"
-                height={522}
+                height={134}
                 src={invitationDetails.monogramImageSrc}
                 unoptimized
-                width={380}
+                width={158}
               />
             ) : (
               <Monogram className="text-[1.05rem]" value={invitationDetails.monogram} />

@@ -368,10 +368,10 @@ export function CelebrationsChapter() {
               <Image
                 alt="Akshita & Varnit monogram"
                 className="h-auto w-9"
-                height={522}
+                height={134}
                 src={invitationDetails.monogramImageSrc}
                 unoptimized
-                width={380}
+                width={158}
               />
             ) : null}
           </motion.div>
