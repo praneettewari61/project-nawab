@@ -13,6 +13,7 @@ import type {
 } from "@/lib/config/travel";
 import { useSafeReducedMotion } from "@/lib/hooks/use-safe-reduced-motion";
 import { cn } from "@/lib/utils";
+import { ScrollIndicator } from "./scroll-indicator";
 import { DESTINATION_ART } from "./travel-art";
 import { TravelJourney } from "./travel-journey";
 
@@ -148,6 +149,13 @@ function InfoBody({ body, action, reduce }: { body: string; action?: TravelLink;
           <ActionLink action={action} reduce={reduce} />
         </motion.div>
       ) : null}
+
+      {/* This is a short card, so on phones there's a long, quiet stretch
+          before "Getting to Lucknow" visibly kicks off its animation below —
+          long enough that people give up scrolling before it starts. */}
+      <motion.div className="relative mt-7 sm:hidden" variants={riseVariants}>
+        <ScrollIndicator label="Keep Scrolling" />
+      </motion.div>
     </>
   );
 }

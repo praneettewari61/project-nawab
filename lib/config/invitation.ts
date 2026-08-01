@@ -60,7 +60,7 @@ export const invitationDetails: InvitationDetails = {
     focalPoint: "49% 46%",
   },
   sealImageSrc: "/images/wax-seal-open.png",
-  monogramImageSrc: "/images/monogram.png",
+  monogramImageSrc: "/images/rsvp/crest.png",
   heroKicker: "The Wedding Of",
   heroTagline: "You're cordially invited to celebrate the story of…",
   heroPortrait: {

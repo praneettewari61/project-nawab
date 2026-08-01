@@ -19,7 +19,7 @@ export interface FaqContent {
 }
 
 export const faq: FaqContent = {
-  heading: "Questions and answers",
+  heading: "Questions & Answers",
   helpText: "Can't find the answer here?",
   contactLabel: `Reach out to ${invitationDetails.firstName} & ${invitationDetails.partnerName}`,
   items: [
@@ -49,7 +49,7 @@ export const faq: FaqContent = {
     },
     {
       question: "Help! I have other questions!",
-      answer: "No worries at all — feel free to reach out to Akshita & Varnit directly, they're happy to help.",
+      answer: "No worries at all — feel free to reach out to us, we're happy to help.",
     },
   ],
 };
