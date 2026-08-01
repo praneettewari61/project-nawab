@@ -8,6 +8,7 @@ import { SiteNav } from "@/components/chapters/site-nav";
 import { useMusic } from "@/components/providers/music-provider";
 import { useScrollLock } from "@/components/providers/scroll-lock-context";
 import { CountdownSection } from "@/components/sections/countdown-section";
+import { FaqSection } from "@/components/sections/faq-section";
 import { HeroSection } from "@/components/sections/hero-section";
 import { VenueSection } from "@/components/sections/venue-section";
 import { SOFT_EASE } from "@/lib/animation/motion";
@@ -119,6 +120,7 @@ export function OpeningExperience({ guestName }: OpeningExperienceProps = {}) {
           <CountdownSection />
           <VenueSection />
           <ChaptersHub />
+          <FaqSection />
         </motion.div>
       </main>
 

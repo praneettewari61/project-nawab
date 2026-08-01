@@ -50,23 +50,29 @@ export function MusicProvider({ children }: { children: ReactNode }) {
 
   // Reliable autostart: play on the first genuine user interaction anywhere on
   // the page (browsers only allow audio to start inside a gesture). If a play
-  // attempt is refused it stays armed for the next interaction, and it detaches
-  // itself once playback begins.
+  // attempt is refused it stays armed for the next interaction. It detaches for
+  // good the moment playback ever begins — via this listener or any other path
+  // (e.g. the sketch reveal's first-touch `enable()`) — so a later manual pause
+  // stays paused instead of being silently resumed by the next page click.
   useEffect(() => {
     if (!music.autoPlayOnEnter) return;
+    const audio = audioRef.current;
+    if (!audio) return;
     const events = ["pointerdown", "touchend", "keydown"];
+    const detach = () => events.forEach((event) => document.removeEventListener(event, unlock));
     const unlock = () => {
-      const audio = audioRef.current;
-      if (!audio || !audio.paused) return;
-      void audio
-        .play()
-        .then(() => events.forEach((event) => document.removeEventListener(event, unlock)))
-        .catch(() => {
-          /* no gesture credit yet — keep listening for the next interaction */
-        });
+      if (!audio.paused) return;
+      void audio.play().catch(() => {
+        /* no gesture credit yet — keep listening for the next interaction */
+      });
     };
+    const onFirstPlay = () => detach();
+    audio.addEventListener("play", onFirstPlay, { once: true });
     events.forEach((event) => document.addEventListener(event, unlock));
-    return () => events.forEach((event) => document.removeEventListener(event, unlock));
+    return () => {
+      detach();
+      audio.removeEventListener("play", onFirstPlay);
+    };
   }, []);
 
   const enable = useCallback(() => {
