@@ -93,7 +93,7 @@ export const celebrations: CelebrationsContent = {
     },
     {
       id: "sangeet",
-      name: "Sangeet & Cocktail",
+      name: "Sangeet",
       date: "11 December 2026",
       time: "8:00 PM onwards",
       venue: "The Grand Banquet and Lawn",

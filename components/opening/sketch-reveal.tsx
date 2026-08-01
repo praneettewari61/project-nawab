@@ -280,7 +280,7 @@ export function SketchReveal({ guestName, onComplete }: SketchRevealProps) {
       ) : null}
       <motion.p
         animate={{ opacity: interacted ? 0 : 1 }}
-        className="mt-1 font-display text-body-large italic text-charcoal/60 [text-shadow:0_1px_10px_rgb(248_244_236/70%)]"
+        className="mt-1 font-display text-h3 italic text-charcoal/60 [text-shadow:0_1px_10px_rgb(248_244_236/70%)]"
         initial={false}
         transition={{ duration: 0.6, ease: SOFT_EASE }}
       >
