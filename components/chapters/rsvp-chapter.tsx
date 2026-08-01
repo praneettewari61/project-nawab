@@ -268,7 +268,7 @@ export function RsvpChapter() {
             {invitationDetails.firstName} &amp; {invitationDetails.partnerName}
           </p>
           <Image
-            alt="Varnit and Akshita monogram"
+            alt="Akshita and Varnit monogram"
             className="mt-1 h-auto w-24 sm:w-28"
             height={134}
             src="/images/rsvp/crest.png"

@@ -84,7 +84,7 @@ export const celebrations: CelebrationsContent = {
       time: "12:00 PM onwards",
       venue: "The Grand Banquet and Lawn",
       description:
-        "A joyful daytime ceremony where family and friends celebrate with turmeric, music and lots of laughter.",
+        "A joyful pre-wedding ritual where a turmeric paste is applied to the couple as an auspicious ubtan (traditional facial) to bless and prepare them for the big day.",
       highlights: ["Turmeric ceremony", "Music", "Family fun"],
       art: "haldi",
       accent: "gold",
@@ -98,7 +98,7 @@ export const celebrations: CelebrationsContent = {
       time: "8:00 PM onwards",
       venue: "The Grand Banquet and Lawn",
       description:
-        "An evening filled with performances, dancing, music and cocktails as everyone celebrates together.",
+        "A lively pre-wedding celebration dedicated to music, dance & joy where both families come together to dance & celebrate the upcoming union.",
       highlights: ["Dance performances", "Live music", "Cocktails"],
       art: "sangeet",
       accent: "rose",
@@ -112,7 +112,7 @@ export const celebrations: CelebrationsContent = {
       time: "12:00 PM onwards",
       venue: "The Grand Banquet and Lawn",
       description:
-        "Our traditional Hindu wedding ceremony where we begin our new journey together, followed by lunch.",
+        "Our traditional Hindu wedding ceremony, centered around ‘Pheras’ where the couple takes vows around a holy fire to symbolize their lifelong marital union.",
       highlights: ["Traditional rituals", "Wedding vows", "Lunch"],
       art: "wedding",
       accent: "maroon",
@@ -126,7 +126,7 @@ export const celebrations: CelebrationsContent = {
       time: "8:00 PM onwards",
       venue: "The Grand Banquet and Lawn",
       description:
-        "A relaxed evening to celebrate with family and friends over dinner, music and heartfelt moments.",
+        "A grand post-wedding celebration to formally introduce the newlywed couple to a wider circle of extended family, friends, & associates over a festive feast.",
       highlights: ["Dinner", "Music", "Celebration"],
       art: "reception",
       accent: "sage",

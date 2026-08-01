@@ -5,6 +5,7 @@ import { Car, Globe, MapPin, Plane } from "lucide-react";
 import Image from "next/image";
 import { Monogram } from "@/components/opening/monogram";
 import { SOFT_EASE } from "@/lib/animation/motion";
+import { ScrollIndicator } from "./scroll-indicator";
 import { invitationDetails } from "@/lib/config/invitation";
 import type { JourneyChip, RoutesCard } from "@/lib/config/travel";
 import { useSafeReducedMotion } from "@/lib/hooks/use-safe-reduced-motion";
@@ -207,7 +208,7 @@ export function TravelJourney({ card }: { card: RoutesCard }) {
           >
             {invitationDetails.monogramImageSrc ? (
               <Image
-                alt="Varnit & Akshita monogram"
+                alt="Akshita & Varnit monogram"
                 className="h-auto w-9"
                 height={522}
                 src={invitationDetails.monogramImageSrc}
@@ -252,6 +253,12 @@ export function TravelJourney({ card }: { card: RoutesCard }) {
           ))}
         </motion.div>
       </motion.div>
+
+      {/* This card's finale (arrival monogram + chips) reads as a natural
+          stopping point, so on phones — where the next card isn't visible in
+          the same glance — a quiet cue nudges guests to keep scrolling to
+          "Discover Beyond Lucknow" rather than assuming the page ends here. */}
+      <ScrollIndicator className="relative mt-9 sm:hidden" label="More to Discover" />
     </>
   );
 }
