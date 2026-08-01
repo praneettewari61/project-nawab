@@ -13,7 +13,7 @@ export const config = {
 };
 
 // Header values must be Latin-1 (ByteString) — keep this ASCII-only.
-const REALM = 'Basic realm="Varnit and Akshita Admin", charset="UTF-8"';
+const REALM = 'Basic realm="Akshita and Varnit Admin", charset="UTF-8"';
 
 function challenge() {
   return new NextResponse("Authentication required.", {

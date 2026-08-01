@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, type Variants } from "framer-motion";
-import { ArrowUpRight, CalendarPlus, MapPin } from "lucide-react";
+import { CalendarPlus, MapPin } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { CardAtmosphere } from "@/components/sections/celebration-atmosphere";
@@ -18,7 +18,6 @@ import { RingsMark } from "@/components/sections/chapter-art";
 import { Container } from "@/components/ui";
 import { SOFT_EASE, revealBlur, revealItem, staggerContainer } from "@/lib/animation/motion";
 import { downloadIcs } from "@/lib/calendar";
-import { venue } from "@/lib/config/celebration";
 import { celebrations, type CelebrationArt, type CelebrationEvent } from "@/lib/config/chapters";
 import { invitationDetails } from "@/lib/config/invitation";
 import { useSafeReducedMotion } from "@/lib/hooks/use-safe-reduced-motion";
@@ -249,16 +248,13 @@ function EventCard({ event }: { event: CelebrationEvent }) {
                     ))}
                   </motion.ul>
 
-                  <motion.div
-                    className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center"
-                    variants={panelItem}
-                  >
+                  <motion.div className="mt-8 flex justify-center" variants={panelItem}>
                     <button
                       className="group/cta relative inline-flex min-h-11 items-center justify-center gap-2 overflow-hidden rounded-full border border-antique-gold/70 bg-transparent px-5 py-2 font-sans text-sm font-medium text-antique-gold transition-[background-color,color,box-shadow,transform] duration-300 ease-out hover:bg-antique-gold hover:text-warm-white hover:shadow-gold-glow active:scale-[0.98] motion-reduce:transition-none"
                       onClick={() =>
                         downloadIcs(
                           {
-                            title: `${event.name} — Varnit & Akshita`,
+                            title: `${event.name} — Akshita & Varnit`,
                             description: event.description,
                             location: event.venue,
                             start: event.start,
@@ -273,23 +269,6 @@ function EventCard({ event }: { event: CelebrationEvent }) {
                       <CalendarPlus aria-hidden="true" size={16} strokeWidth={1.8} />
                       Add to Calendar
                     </button>
-
-                    <a
-                      className="group/venue inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-2 py-2 font-sans text-sm font-medium text-charcoal/60 underline decoration-antique-gold/40 underline-offset-4 transition-colors duration-300 hover:text-deep-maroon hover:decoration-antique-gold motion-reduce:transition-none"
-                      href={venue.mapUrl}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      <MapPin aria-hidden="true" size={15} strokeWidth={1.7} />
-                      View Venue
-                      <ArrowUpRight
-                        aria-hidden="true"
-                        className="text-antique-gold transition-transform duration-300 group-hover/venue:-translate-y-0.5 group-hover/venue:translate-x-0.5 motion-reduce:transition-none"
-                        size={14}
-                        strokeWidth={1.8}
-                      />
-                      <span className="sr-only"> on Google Maps (opens in a new tab)</span>
-                    </a>
                   </motion.div>
 
                   <motion.div className="mt-7 flex justify-center" variants={panelItem}>
@@ -387,7 +366,7 @@ export function CelebrationsChapter() {
           >
             {invitationDetails.monogramImageSrc ? (
               <Image
-                alt="Varnit & Akshita monogram"
+                alt="Akshita & Varnit monogram"
                 className="h-auto w-9"
                 height={522}
                 src={invitationDetails.monogramImageSrc}

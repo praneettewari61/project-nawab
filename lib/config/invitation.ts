@@ -42,11 +42,11 @@ export interface InvitationDetails {
 }
 
 export const invitationDetails: InvitationDetails = {
-  monogram: "V & A",
-  firstName: "Varnit",
-  partnerName: "Akshita",
-  fullName: "Varnit Tewari",
-  partnerFullName: "Akshita Negi",
+  monogram: "A & V",
+  firstName: "Akshita",
+  partnerName: "Varnit",
+  fullName: "Akshita Negi",
+  partnerFullName: "Varnit Tewari",
   invitationLine: "Together with our families, we invite you to celebrate our wedding",
   city: "Lucknow",
   cityTagline: "City of Nawabs",
@@ -65,6 +65,6 @@ export const invitationDetails: InvitationDetails = {
   heroTagline: "You're cordially invited to celebrate the story of…",
   heroPortrait: {
     src: "/images/couple-illustration.png",
-    alt: "Illustration of Varnit and Akshita in traditional Indian attire",
+    alt: "Illustration of Akshita and Varnit in traditional Indian attire",
   },
 };

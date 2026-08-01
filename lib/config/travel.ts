@@ -57,7 +57,7 @@ export interface Destination {
 export interface DestinationsNote {
   title: string;
   body: string;
-  /** Optional sign-off, e.g. "Varnit & Akshita". */
+  /** Optional sign-off, e.g. "Akshita & Varnit". */
   signature?: string;
 }
 
@@ -127,7 +127,7 @@ export const travelContent: TravelContent = {
         hub: { city: "Delhi", code: "DEL" },
         destination: { city: "Lucknow", code: "LKO" },
         arrivalTitle: "Your celebration begins here.",
-        arrivalSubtitle: "Varnit & Akshita await you.",
+        arrivalSubtitle: "Akshita & Varnit await you.",
       },
       note: "Most international guests arrive via Delhi before taking a short domestic flight to Lucknow. Depending on your departure city, direct international connections to Lucknow may also be available.",
       chips: [
@@ -172,7 +172,7 @@ export const travelContent: TravelContent = {
       note: {
         title: "A Little More to Discover",
         body: "If your schedule allows, we hope you'll take the opportunity to explore some of North India's most beautiful destinations and create memories beyond our wedding weekend.",
-        signature: "Varnit & Akshita",
+        signature: "Akshita & Varnit",
       },
     },
   ],

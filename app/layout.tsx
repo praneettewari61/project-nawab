@@ -17,8 +17,8 @@ const manrope = Manrope({
 
 export const metadata: Metadata = {
   title: {
-    default: "Varnit & Akshita",
-    template: "%s · Varnit & Akshita",
+    default: "Akshita & Varnit",
+    template: "%s · Akshita & Varnit",
   },
   description:
     "Together with our families, we invite you to celebrate our wedding — 12 December 2026, Lucknow.",
