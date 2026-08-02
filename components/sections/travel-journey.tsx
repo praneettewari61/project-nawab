@@ -210,10 +210,10 @@ export function TravelJourney({ card }: { card: RoutesCard }) {
               <Image
                 alt="Akshita & Varnit monogram"
                 className="h-auto w-9"
-                height={801}
+                height={788}
                 src={invitationDetails.monogramImageSrc}
                 unoptimized
-                width={1173}
+                width={1238}
               />
             ) : (
               <Monogram className="text-[1.05rem]" value={invitationDetails.monogram} />
@@ -229,9 +229,6 @@ export function TravelJourney({ card }: { card: RoutesCard }) {
           custom={4.6}
           variants={fadeUp}
         >
-          {journey.arrivalTitle}
-        </motion.p>
-        <motion.p className="mt-1.5 font-display text-body-large italic text-antique-gold" custom={5.2} variants={fadeUp}>
           {journey.arrivalSubtitle}
         </motion.p>
 

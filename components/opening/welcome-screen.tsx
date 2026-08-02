@@ -71,10 +71,10 @@ export function WelcomeScreen({ details, onBegin, guestName }: WelcomeScreenProp
                 <Image
                   alt={`${details.firstName} & ${details.partnerName} monogram`}
                   className="h-auto w-56 sm:w-72 md:w-80"
-                  height={801}
+                  height={788}
                   src={details.monogramImageSrc}
                   unoptimized
-                  width={1173}
+                  width={1238}
                 />
               </motion.div>
             </motion.div>

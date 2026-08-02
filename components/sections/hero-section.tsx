@@ -95,9 +95,9 @@ export function HeroSection({ details, revealed }: HeroSectionProps) {
           className="mt-[3.6vh] whitespace-nowrap font-display font-medium leading-none tracking-[-0.01em] text-warm-white [text-shadow:0_2px_22px_rgb(20_14_8/50%)]"
           variants={item}
         >
-          <span className="text-[2.2rem] sm:text-[3.25rem] md:text-[4rem]">{details.firstName}</span>
-          <span className="mx-2.5 align-baseline text-[0.62em] italic text-warm-white/85 sm:mx-3.5">&amp;</span>
           <span className="text-[2.2rem] sm:text-[3.25rem] md:text-[4rem]">{details.partnerName}</span>
+          <span className="mx-2.5 align-baseline text-[0.62em] italic text-warm-white/85 sm:mx-3.5">&amp;</span>
+          <span className="text-[2.2rem] sm:text-[3.25rem] md:text-[4rem]">{details.firstName}</span>
         </motion.h1>
 
         <motion.p
