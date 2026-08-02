@@ -72,10 +72,10 @@ export function InvitationFace({ details, variant = "panel", sealSlot }: Invitat
               <Image
                 alt={`${details.firstName} & ${details.partnerName} monogram`}
                 className="h-auto w-[clamp(64px,12dvh,116px)]"
-                height={134}
+                height={801}
                 src={details.monogramImageSrc}
                 unoptimized
-                width={158}
+                width={1173}
               />
             ) : (
               <div className="flex flex-col items-center text-antique-gold">

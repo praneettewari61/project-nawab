@@ -269,7 +269,7 @@ export function SketchReveal({ guestName, onComplete }: SketchRevealProps) {
 
   const header = (
     <>
-      <Image alt="" className="mb-0.5 h-auto w-14 opacity-90 sm:w-16" height={134} src={CREST_SRC} width={158} />
+      <Image alt="" className="mb-0.5 h-auto w-14 opacity-90 sm:w-16" height={801} src={CREST_SRC} width={1173} />
       <p className="font-sans text-caption font-medium uppercase tracking-[0.3em] text-charcoal/60">
         Welcome{greeted ? "," : ""}
       </p>
