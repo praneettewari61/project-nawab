@@ -270,9 +270,9 @@ export function RsvpChapter() {
           <Image
             alt="Akshita and Varnit monogram"
             className="mt-1 h-auto w-24 sm:w-28"
-            height={801}
-            src="/images/rsvp/crest.png"
-            width={1173}
+            height={788}
+            src="/images/rsvp/crest-2.png"
+            width={1238}
           />
         </motion.div>
       </Container>

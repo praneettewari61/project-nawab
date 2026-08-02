@@ -41,7 +41,6 @@ export interface Journey {
   origin: string;
   hub: RouteEndpoint;
   destination: RouteEndpoint;
-  arrivalTitle: string;
   arrivalSubtitle: string;
 }
 
@@ -126,7 +125,6 @@ export const travelContent: TravelContent = {
         origin: "International Flight",
         hub: { city: "Delhi", code: "DEL" },
         destination: { city: "Lucknow", code: "LKO" },
-        arrivalTitle: "Your celebration begins here.",
         arrivalSubtitle: "Akshita & Varnit await you.",
       },
       note: "Most international guests arrive via Delhi before taking a short domestic flight to Lucknow. Depending on your departure city, direct international connections to Lucknow may also be available.",

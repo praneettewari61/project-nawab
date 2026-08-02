@@ -19,7 +19,7 @@ const MOBILE_SKETCH = "/images/splashScreen/opt/sketch-hero.webp";
 const MOBILE_PHOTO = "/images/splashScreen/opt/actual.webp";
 const DESKTOP_SKETCH = "/images/splashScreen/opt/desktop-sketch.webp";
 const DESKTOP_PHOTO = "/images/splashScreen/opt/desktop-photo.webp";
-const CREST_SRC = "/images/rsvp/crest.png";
+const CREST_SRC = "/images/rsvp/crest-2.png";
 
 /**
  * "Desktop" = a real laptop/computer: wide viewport AND a fine, hovering pointer
@@ -269,7 +269,7 @@ export function SketchReveal({ guestName, onComplete }: SketchRevealProps) {
 
   const header = (
     <>
-      <Image alt="" className="mb-0.5 h-auto w-14 opacity-90 sm:w-16" height={801} src={CREST_SRC} width={1173} />
+      <Image alt="" className="mb-0.5 h-auto w-14 opacity-90 sm:w-16" height={788} src={CREST_SRC} width={1238} />
       <p className="font-sans text-caption font-medium uppercase tracking-[0.3em] text-charcoal/60">
         Welcome{greeted ? "," : ""}
       </p>

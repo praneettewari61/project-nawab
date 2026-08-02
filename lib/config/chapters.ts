@@ -98,7 +98,7 @@ export const celebrations: CelebrationsContent = {
       time: "8:00 PM onwards",
       venue: "The Grand Banquet and Lawn",
       description:
-        "A lively pre-wedding celebration dedicated to music, dance & joy where both families come together to dance & celebrate the upcoming union.",
+        "A lively pre-wedding celebration dedicated to music, dance & joy where both families come together celebrate the upcoming union.",
       highlights: ["Dance performances", "Live music", "Cocktails"],
       art: "sangeet",
       accent: "rose",
